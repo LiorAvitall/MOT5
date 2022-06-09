@@ -30,6 +30,7 @@ public class NewDeck : MonoBehaviour
     {
         if (_photonView.IsMine)
         {
+            name = _photonView.Owner.NickName;
             _aspectsInDeck.Clear();
 
             for (int i = 0; i < 5; i++)
