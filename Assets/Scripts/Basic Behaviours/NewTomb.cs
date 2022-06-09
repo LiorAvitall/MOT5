@@ -47,13 +47,13 @@ public class NewTomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPoint
             CardData cardToTomb = eventData.pointerDrag.GetComponent<CardDisplay>().CardData;
 
             //add current card to tomb
-            NewEventHandler.Instance.Tomb.CardsInTomb.Add(cardToTomb);
+            NewEventHandler.Instance.MyTomb.CardsInTomb.Add(cardToTomb);
 
             //check if works
             print(cardToTomb.Name);
 
             //remove placed cards from hand
-            NewEventHandler.Instance.Hand.CardsInHand.Remove(cardToTomb);
+            NewEventHandler.Instance.MyHand.CardsInHand.Remove(cardToTomb);
 
             Destroy(eventData.pointerDrag);
 
@@ -71,13 +71,13 @@ public class NewTomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPoint
             CardData cardToTomb = eventData.pointerDrag.GetComponent<CardDisplay>().CardData;
 
             //add current card to tomb
-            NewEventHandler.Instance.Tomb.CardsInTomb.Add(cardToTomb);
+            NewEventHandler.Instance.MyTomb.CardsInTomb.Add(cardToTomb);
 
             //check if works
             print(cardToTomb.Name);
 
             //remove placed cards from battlefield
-            NewEventHandler.Instance.Battlefield.CardsInField.Remove(cardToTomb);
+            NewEventHandler.Instance.MyBattlefield.CardsInField.Remove(cardToTomb);
 
             Destroy(eventData.pointerDrag);
 

@@ -66,7 +66,7 @@ public class NewDeck : MonoBehaviour
             foreach (CardData cardata in cardsToHand)
             {
                 _cardPrefab.GetComponent<CardDisplay>().CardData = cardata;
-                Instantiate(_cardPrefab, NewEventHandler.Instance.Hand.transform);
+                Instantiate(_cardPrefab, NewEventHandler.Instance.MyHand.transform);
 
                 //check if works (update: it does)
                 print(cardata.Name);
@@ -82,12 +82,14 @@ public class NewDeck : MonoBehaviour
     {
         if (_photonView.IsMine)
         {
+            Debug.Log("Drawing Card");
             //get top card in deck & adds it to the hand
-            NewEventHandler.Instance.Hand.CardsInHand.Add(_aspectsInDeck[0]);
+            NewEventHandler.Instance.MyHand.CardsInHand.Add(_aspectsInDeck[0]);
 
             //reads said card data and creates a prefab based on that data in the hand
             _cardPrefab.GetComponent<CardDisplay>().CardData = _aspectsInDeck[0];
-            Instantiate(_cardPrefab, NewEventHandler.Instance.Hand.transform);
+
+            Instantiate(_cardPrefab, transform.parent.FindChild("Hand"));
 
             //check if works (update: it does)
             print(_aspectsInDeck[0].Name);
@@ -105,13 +107,13 @@ public class NewDeck : MonoBehaviour
             List<CardData> cardsToHand = _aspectsInDeck.GetRange(0, 2);
 
             //add said cards to hand
-            NewEventHandler.Instance.Hand.CardsInHand.AddRange(cardsToHand);
+            NewEventHandler.Instance.MyHand.CardsInHand.AddRange(cardsToHand);
 
             //loops through said cards's data, reads it and creates a prefab based on that data in the hand
             foreach (CardData card in cardsToHand)
             {
                 _cardPrefab.GetComponent<CardDisplay>().CardData = card;
-                Instantiate(_cardPrefab, NewEventHandler.Instance.Hand.transform);
+                Instantiate(_cardPrefab, NewEventHandler.Instance.MyHand.transform);
 
                 //check if works (update: it does)
                 print(card.Name);

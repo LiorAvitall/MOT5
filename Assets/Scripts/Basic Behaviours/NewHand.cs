@@ -40,7 +40,7 @@ public class NewHand : MonoBehaviour, IDropHandler, IPointerClickHandler, IPoint
             return;
 
         else if (NewEventHandler.Instance.IsSacrificing)
-            NewEventHandler.Instance.Tomb.CardToSacrifice(eventData);
+            NewEventHandler.Instance.MyTomb.CardToSacrifice(eventData);
     }
 
     public void OnDrop(PointerEventData eventData)

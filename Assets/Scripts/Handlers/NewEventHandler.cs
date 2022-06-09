@@ -9,11 +9,23 @@ public class NewEventHandler : MonoBehaviour
 {
     public static NewEventHandler Instance { get; private set; }
 
-    [Header("Sections")]
-    public NewDeck Deck;
-    public NewHand Hand;
-    public NewBattlefield Battlefield;
-    public NewTomb Tomb;
+    #region Photon
+    [SerializeField] private PhotonView _photonView;
+    public PhotonView PhotonView { get => _photonView; }
+    #endregion
+
+    [SerializeField] private Transform _gameCanvas;
+
+    [Header("Player Components")]
+    private NewDeck _myDeck;
+    private NewHand _myHand;
+    private NewBattlefield _myBattlefield;
+    private NewTomb _myTomb;
+
+    public NewDeck MyDeck { get => _myDeck; }
+    public NewHand MyHand { get => _myHand; }
+    public NewBattlefield MyBattlefield { get => _myBattlefield; }
+    public NewTomb MyTomb { get => _myTomb; }
 
     //public GameObject SacrificeOverlay;
     public GameObject LastPlacedCardOnBattelfield;
@@ -21,7 +33,6 @@ public class NewEventHandler : MonoBehaviour
     public bool IsSacrificing = false;
     public bool IsDestroying = false;
 
-    public PhotonView PhotonView;
 
     //public LineRenderer TargetLine;
 
@@ -37,6 +48,29 @@ public class NewEventHandler : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        Transform playerBoard;
+        if (_photonView.IsMine)
+        {
+            playerBoard = _gameCanvas.Find("Player1 Board");
+        }
+        else
+        {
+            playerBoard = _gameCanvas.Find("Player2 Board");
+        }
+
+        _myDeck = playerBoard.Find("Deck").GetComponent<NewDeck>();
+        _myHand = playerBoard.Find("Hand").GetComponent<NewHand>();
+        _myBattlefield = playerBoard.Find("Battlefield").GetComponent<NewBattlefield>();
+        _myTomb = playerBoard.Find("Tomb").GetComponent<NewTomb>();
+    }
+
+    private IEnumerator FindPlayerComponents()
+    {
+        yield return null;
+    }
+
     public void CloseWindow(GameObject window)
     {
         window.SetActive(false);
@@ -50,17 +84,17 @@ public class NewEventHandler : MonoBehaviour
     public void StartGame()
     {
         // Draw first card from deck's aspect list from deck to hand
-        Deck.InitializeGame();
+        MyDeck.InitializeGame();
     }
 
     public void DrawCard()
     {
-        Deck.DrawCard();
+        MyDeck.DrawCard();
     }
 
     public void DrawTwo()
     {
-        Deck.DrawTwo();
+        MyDeck.DrawTwo();
     }
 
     public void Sacrifice()
@@ -84,13 +118,13 @@ public class NewEventHandler : MonoBehaviour
         CardData cardToField = currentTarget.gameObject.GetComponent<CardDisplay>().CardData;
 
         //add current card to battlefield
-        Battlefield.CardsInField.Add(cardToField);
+        MyBattlefield.CardsInField.Add(cardToField);
 
         //check if works
         print(cardToField.Name);
 
         //remove placed cards from hand
-        Hand.CardsInHand.Remove(cardToField);
+        MyHand.CardsInHand.Remove(cardToField);
 
         Action(cardToField);
 

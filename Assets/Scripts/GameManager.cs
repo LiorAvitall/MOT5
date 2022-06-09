@@ -8,10 +8,10 @@ enum AspectOfElement { Light = 0, Death = 1, Destruction = 3, Life = 4, Control 
 public class GameManager : MonoBehaviour
 {
     #region Photon
-    [SerializeField] PhotonView _photonView;
+    [SerializeField] private PhotonView _photonView;
     #endregion
 
-    [SerializeField] private GameObject _playerUI;
+    [SerializeField] private GameObject _playerBoard;
     [SerializeField] private Transform _gameCanvas;
 
     private void Start()
@@ -21,15 +21,29 @@ public class GameManager : MonoBehaviour
 
     private void Duel()
     {
+        InitializeDuel();
+    }
+
+    private void InitializeDuel()
+    {
         if (_photonView.IsMine)
         {
+            GameObject player1Board = Instantiate(_playerBoard, _gameCanvas);
+            player1Board.name = "Player1 Board";
 
-            GameObject playerBoard = Instantiate(_playerUI, _gameCanvas);
+            GameObject player2Board = Instantiate(_playerBoard, _gameCanvas);
+            player2Board.transform.rotation = new Quaternion(0f, 0f, 180f, 0f);
+
+            player2Board.name = "Player2 Board";
         }
         else
         {
-            GameObject playerBoard = Instantiate(_playerUI, _gameCanvas);
-            playerBoard.transform.rotation = new Quaternion(_playerUI.transform.rotation.x, _playerUI.transform.rotation.y, _playerUI.transform.rotation.z + 180, _playerUI.transform.rotation.w);
+            GameObject player1Board = Instantiate(_playerBoard, _gameCanvas);
+            player1Board.transform.rotation = new Quaternion(0f, 0f, 180f, 0f);
+            player1Board.name = "Player1 Board";
+
+            GameObject player2Board = Instantiate(_playerBoard, _gameCanvas);
+            player2Board.name = "Player2 Board";
         }
     }
 

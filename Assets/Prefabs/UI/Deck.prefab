@@ -257,7 +257,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3976953472569147860, guid: 397998c92f3c55441ad8ace1992ae470, type: 3}
         m_TargetAssemblyTypeName: NewEventHandler, Assembly-CSharp
         m_MethodName: DrawCard
         m_Mode: 1

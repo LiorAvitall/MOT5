@@ -81,10 +81,10 @@ public class NewBattlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler,
         if (_photonView.IsMine)
             return;
 
-        if (!NewEventHandler.Instance.PhotonView.IsMine)
-        {
-
-        }
+        //if (!NewEventHandler.Instance.PhotonView.IsMine)
+        //{
+        //
+        //}
         //ClickEventData = eventData;
 
         //if (!_myDataHandler.IsDestroying)
