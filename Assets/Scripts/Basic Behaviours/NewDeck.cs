@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -26,11 +27,19 @@ public class NewDeck : MonoBehaviour
 
     private int _maxDeckSize = 25, _currentDeckSize;
 
+    public Button OnClickDeck;
+
     private void Start()
     {
+        StartCoroutine(ShuffleDeck());
+    }
+
+    private IEnumerator ShuffleDeck()
+    {
+        yield return new WaitForSeconds(0.1f);
+
         if (_photonView.IsMine)
         {
-            name = _photonView.Owner.NickName;
             _aspectsInDeck.Clear();
 
             for (int i = 0; i < 5; i++)
@@ -41,6 +50,7 @@ public class NewDeck : MonoBehaviour
                 _aspectsInDeck.Add(_lifeCard);
                 _aspectsInDeck.Add(_controlCard);
             }
+
             //randomize _aspectsInDeck list
             for (int i = 0; i < _aspectsInDeck.Count; i++)
             {
@@ -89,13 +99,18 @@ public class NewDeck : MonoBehaviour
             //reads said card data and creates a prefab based on that data in the hand
             _cardPrefab.GetComponent<CardDisplay>().CardData = _aspectsInDeck[0];
 
-            Instantiate(_cardPrefab, transform.parent.FindChild("Hand"));
-
+            //Instantiate(_cardPrefab, NewEventHandler.Instance.MyHand.transform);
+            GameObject drawnCard = PhotonNetwork.Instantiate("Aspect Prefab", Vector2.zero, Quaternion.identity);
+            drawnCard.transform.parent = NewEventHandler.Instance.MyHand.transform;
             //check if works (update: it does)
             print(_aspectsInDeck[0].Name);
 
             _aspectsInDeck.RemoveAt(0);
             _currentDeckSize--;
+        }
+        else
+        {
+            Debug.Log("This is not your deck");
         }
     }
 

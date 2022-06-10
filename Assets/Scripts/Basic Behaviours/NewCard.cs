@@ -43,7 +43,7 @@ public class NewCard : MonoBehaviour, IPointerEnterHandler, IDragHandler, IBegin
     private void Start()
     {
         _cardData = GetComponent<CardDisplay>().CardData;
-        _state = InDeck;
+        _state = InHand;
     }
 
     private void Update()
@@ -55,7 +55,7 @@ public class NewCard : MonoBehaviour, IPointerEnterHandler, IDragHandler, IBegin
     {
         if (_photonView.IsMine)
         {
-            Debug.Log("called: In Deck");
+            Debug.Log("called: In Deck");  
         }
     }
 
@@ -64,6 +64,7 @@ public class NewCard : MonoBehaviour, IPointerEnterHandler, IDragHandler, IBegin
         if (_photonView.IsMine)
         {
             Debug.Log("called: In Hand");
+            transform.parent = NewEventHandler.Instance.MyHand.transform;
         }
     }
 
@@ -81,6 +82,11 @@ public class NewCard : MonoBehaviour, IPointerEnterHandler, IDragHandler, IBegin
         {
             Debug.Log("called: In Tomb");
         }
+    }
+
+    private void Hover()
+    {
+       
     }
 
     private void StartDragging()
@@ -129,26 +135,27 @@ public class NewCard : MonoBehaviour, IPointerEnterHandler, IDragHandler, IBegin
     {
         transform.SetParent(NextParent);
         transform.SetSiblingIndex(transform.GetSiblingIndex());
-        _canvasGroup.blocksRaycasts = true;
 
         if (_currentParent != OldParent)
         {
-            if (NextParent = _deckTransform)
+            if (_currentParent = _deckTransform)
             {
                 _state = InDeck;
             }
-            else if (NextParent = _handTransform)
+            else if (_currentParent = _handTransform)
             {
                 _state = InHand;
             }
-            else if (NextParent = _battlefieldTransform)
+            else if (_currentParent = _battlefieldTransform)
             {
                 _state = InBattlefield;
             }
-            else if (NextParent = _tombTransform)
+            else if (_currentParent = _tombTransform)
             {
                 _state = InTomb;
             }
+
+        _canvasGroup.blocksRaycasts = true;
         }
     }
 
@@ -176,7 +183,18 @@ public class NewCard : MonoBehaviour, IPointerEnterHandler, IDragHandler, IBegin
 
         if (_photonView.IsMine)
         {
-            //_state = ;
+            OldParent = transform;
+
+            if (_state != InHand && _state != InBattlefield)
+                return;
+
+            // affects cards in battlefield
+            else if (_state != InHand)
+                transform.position = new Vector2(transform.position.x, transform.position.y + _onHoverOffsetBattleField);
+
+            // affects cars in hand
+            else
+                transform.position = new Vector2(transform.position.x, transform.position.y + _onHoverOffsetHand);
         }
     }
 
@@ -218,7 +236,16 @@ public class NewCard : MonoBehaviour, IPointerEnterHandler, IDragHandler, IBegin
 
         if (_photonView.IsMine)
         {
-            _state = Play;
+            if (_state == InBattlefield)
+            {
+                transform.parent = NewEventHandler.Instance.MyBattlefield.transform;
+                _state = Play;
+            }
+            else
+            {
+                transform.SetParent(OldParent);
+            }
+
         }
     }
 
@@ -228,7 +255,16 @@ public class NewCard : MonoBehaviour, IPointerEnterHandler, IDragHandler, IBegin
 
         if (_photonView.IsMine)
         {
-            //_state = ;
+            if (_state != InHand && _state != InBattlefield)
+                return;
+
+            // affects cards in battlefield
+            else if (_state != InHand)
+                transform.position = new Vector2(transform.position.x, transform.position.y - _onHoverOffsetBattleField);
+
+            // affects cars in hand
+            else
+                transform.position = new Vector2(transform.position.x, transform.position.y - _onHoverOffsetHand);
         }
     }
     #endregion

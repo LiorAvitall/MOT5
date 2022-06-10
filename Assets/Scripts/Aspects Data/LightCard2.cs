@@ -11,6 +11,7 @@ public class LightCard2 : CardData
 
 	public void Action()
 	{
+		Debug.Log($"Aspect Action: Light");
 		// logic here
 	}
 

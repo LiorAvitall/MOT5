@@ -11,7 +11,8 @@ public class NewEventHandler : MonoBehaviour
 
     #region Photon
     [SerializeField] private PhotonView _photonView;
-    public PhotonView PhotonView { get => _photonView; }
+    public PhotonView PhotonView { get => _photonView; set =>_photonView = value; }
+    public int PhotonID { get => _photonView.ViewID; }
     #endregion
 
     [SerializeField] private Transform _gameCanvas;
@@ -22,10 +23,10 @@ public class NewEventHandler : MonoBehaviour
     private NewBattlefield _myBattlefield;
     private NewTomb _myTomb;
 
-    public NewDeck MyDeck { get => _myDeck; }
-    public NewHand MyHand { get => _myHand; }
-    public NewBattlefield MyBattlefield { get => _myBattlefield; }
-    public NewTomb MyTomb { get => _myTomb; }
+    public NewDeck MyDeck { get => _myDeck; set => _myDeck = value; }
+    public NewHand MyHand { get => _myHand; set => _myHand = value; }
+    public NewBattlefield MyBattlefield { get => _myBattlefield; set => _myBattlefield = value; }
+    public NewTomb MyTomb { get => _myTomb; set => _myTomb = value; }
 
     //public GameObject SacrificeOverlay;
     public GameObject LastPlacedCardOnBattelfield;
@@ -50,7 +51,18 @@ public class NewEventHandler : MonoBehaviour
 
     private void Start()
     {
+
+        // get player components
+        StartCoroutine(FindPlayerComponents());
+    }
+
+    private IEnumerator FindPlayerComponents()
+    {
+        yield return new WaitForSeconds(0.1f);
+
         Transform playerBoard;
+        _gameCanvas = GameObject.Find("Game Canvas").transform;
+
         if (_photonView.IsMine)
         {
             playerBoard = _gameCanvas.Find("Player1 Board");
@@ -66,11 +78,6 @@ public class NewEventHandler : MonoBehaviour
         _myTomb = playerBoard.Find("Tomb").GetComponent<NewTomb>();
     }
 
-    private IEnumerator FindPlayerComponents()
-    {
-        yield return null;
-    }
-
     public void CloseWindow(GameObject window)
     {
         window.SetActive(false);
@@ -84,12 +91,12 @@ public class NewEventHandler : MonoBehaviour
     public void StartGame()
     {
         // Draw first card from deck's aspect list from deck to hand
-        MyDeck.InitializeGame();
+        _myDeck.InitializeGame();
     }
 
     public void DrawCard()
     {
-        MyDeck.DrawCard();
+        _myDeck.DrawCard();
     }
 
     public void DrawTwo()

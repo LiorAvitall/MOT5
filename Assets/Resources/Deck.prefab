@@ -257,8 +257,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3976953472569147860, guid: 397998c92f3c55441ad8ace1992ae470, type: 3}
-        m_TargetAssemblyTypeName: NewEventHandler, Assembly-CSharp
+      - m_Target: {fileID: 7708089144660606804}
+        m_TargetAssemblyTypeName: NewDeck, Assembly-CSharp
         m_MethodName: DrawCard
         m_Mode: 1
         m_Arguments:
@@ -282,38 +282,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _photonView: {fileID: 1773834169}
-  _aspectsInDeck:
-  - {fileID: 11400000, guid: e933b98903f95f14eaed4bdc68fb406c, type: 2}
-  - {fileID: 11400000, guid: e933b98903f95f14eaed4bdc68fb406c, type: 2}
-  - {fileID: 11400000, guid: e933b98903f95f14eaed4bdc68fb406c, type: 2}
-  - {fileID: 11400000, guid: e933b98903f95f14eaed4bdc68fb406c, type: 2}
-  - {fileID: 11400000, guid: e933b98903f95f14eaed4bdc68fb406c, type: 2}
-  - {fileID: 11400000, guid: 60aa827cf1816cd4fa2e8c0e06552139, type: 2}
-  - {fileID: 11400000, guid: 60aa827cf1816cd4fa2e8c0e06552139, type: 2}
-  - {fileID: 11400000, guid: 60aa827cf1816cd4fa2e8c0e06552139, type: 2}
-  - {fileID: 11400000, guid: 60aa827cf1816cd4fa2e8c0e06552139, type: 2}
-  - {fileID: 11400000, guid: 60aa827cf1816cd4fa2e8c0e06552139, type: 2}
-  - {fileID: 11400000, guid: 47f538589d029c8478f2a29fd89a6175, type: 2}
-  - {fileID: 11400000, guid: 47f538589d029c8478f2a29fd89a6175, type: 2}
-  - {fileID: 11400000, guid: 47f538589d029c8478f2a29fd89a6175, type: 2}
-  - {fileID: 11400000, guid: 47f538589d029c8478f2a29fd89a6175, type: 2}
-  - {fileID: 11400000, guid: 47f538589d029c8478f2a29fd89a6175, type: 2}
-  - {fileID: 11400000, guid: e31026ead7c5b4146876e153ce7f624e, type: 2}
-  - {fileID: 11400000, guid: e31026ead7c5b4146876e153ce7f624e, type: 2}
-  - {fileID: 11400000, guid: e31026ead7c5b4146876e153ce7f624e, type: 2}
-  - {fileID: 11400000, guid: e31026ead7c5b4146876e153ce7f624e, type: 2}
-  - {fileID: 11400000, guid: e31026ead7c5b4146876e153ce7f624e, type: 2}
-  - {fileID: 11400000, guid: c55893f33d7ecae45b663e00b294a007, type: 2}
-  - {fileID: 11400000, guid: c55893f33d7ecae45b663e00b294a007, type: 2}
-  - {fileID: 11400000, guid: c55893f33d7ecae45b663e00b294a007, type: 2}
-  - {fileID: 11400000, guid: c55893f33d7ecae45b663e00b294a007, type: 2}
-  - {fileID: 11400000, guid: c55893f33d7ecae45b663e00b294a007, type: 2}
+  _aspectsInDeck: []
   _cardPrefab: {fileID: 1626021463518533258, guid: 0ea99db11681d934d9f63bcf3b6ec479, type: 3}
   _lightCard: {fileID: 11400000, guid: e933b98903f95f14eaed4bdc68fb406c, type: 2}
   _deathCard: {fileID: 11400000, guid: 60aa827cf1816cd4fa2e8c0e06552139, type: 2}
   _destructionCard: {fileID: 11400000, guid: 47f538589d029c8478f2a29fd89a6175, type: 2}
   _lifeCard: {fileID: 11400000, guid: e31026ead7c5b4146876e153ce7f624e, type: 2}
   _controlCard: {fileID: 11400000, guid: c55893f33d7ecae45b663e00b294a007, type: 2}
+  OnClickDeck: {fileID: 0}
 --- !u!114 &1773834169
 MonoBehaviour:
   m_ObjectHideFlags: 0

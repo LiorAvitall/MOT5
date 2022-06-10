@@ -44,14 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c3911e6c99a0db4b939bf72e1a0bdbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deck: {fileID: 7708089144660606804, guid: 8a0c5100ad7ddbf4a8a75908113b388a, type: 3}
-  Hand: {fileID: 6043524979694181211, guid: cb05bcff3ace8ef458580453dea9fc05, type: 3}
-  Battlefield: {fileID: 2234844817574261093, guid: 0dff8c2b561ba4b49b9782331639ff8b, type: 3}
-  Tomb: {fileID: 5458089098261008100, guid: bff230b358d046e4ca6b84c67d3e6f62, type: 3}
+  _photonView: {fileID: 3976953472569147863}
+  _gameCanvas: {fileID: 0}
   LastPlacedCardOnBattelfield: {fileID: 0}
   IsSacrificing: 0
   IsDestroying: 0
-  PhotonView: {fileID: 3976953472569147863}
 --- !u!114 &3976953472569147863
 MonoBehaviour:
   m_ObjectHideFlags: 0
