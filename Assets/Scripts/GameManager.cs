@@ -7,6 +7,8 @@ enum AspectOfElement { Light = 0, Death = 1, Destruction = 3, Life = 4, Control 
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     #region Photon
     [SerializeField] private PhotonView _photonView;
     #endregion
@@ -14,15 +16,30 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerBoard, _eventHandler;
     [SerializeField] private Transform _gameCanvas;
 
+    [SerializeField] public List<PlayerController> PlayerList;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void Start()
     {
-        _gameCanvas.position = Vector2.zero;
-        Duel();
+        //_gameCanvas.position = Vector2.zero;
+        //Duel();
     }
 
     private void Duel()
     {
-        InitializeDuel();
+        //InitializeDuel();
     }
 
     private void InitializeDuel()
