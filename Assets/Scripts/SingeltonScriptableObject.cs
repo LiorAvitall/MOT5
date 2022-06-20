@@ -6,7 +6,7 @@ public abstract class SingeltonScriptableObject<T> : ScriptableObject where T : 
 {
     public static T _instance = null;
    
-    public static T instance
+    public static T Instance
     {
         get
         {

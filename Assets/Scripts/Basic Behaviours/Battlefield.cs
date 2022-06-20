@@ -17,10 +17,7 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
     public Card CurrentCardInBattlefield;
     public CardData CurrentCardDataInBattlefield;
 
-    public static void InBattlefieldState()
-    {
 
-    }
     public PointerEventData ClickEventData;
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -34,7 +31,7 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
 
         if (CurrentCardInBattlefield != null)
         {
-            CurrentCardInBattlefield.TempParentToReturn = transform;
+            CurrentCardInBattlefield.ParentToReturnPlaceholder = transform;
             CurrentCardInBattlefield.IsCardInHand = false;
         }
     }
@@ -58,9 +55,9 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
         if (eventData.pointerDrag == null)
             return;
 
-        if (CurrentCardInBattlefield != null && CurrentCardInBattlefield.TempParentToReturn == transform)
+        if (CurrentCardInBattlefield != null && CurrentCardInBattlefield.ParentToReturnPlaceholder == transform)
         {
-            CurrentCardInBattlefield.TempParentToReturn = transform;
+            CurrentCardInBattlefield.ParentToReturnPlaceholder = transform;
             CurrentCardInBattlefield.IsCardInHand = false;
         }
     }

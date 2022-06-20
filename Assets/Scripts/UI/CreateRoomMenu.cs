@@ -35,6 +35,6 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        Debug.Log("Room creation failed");
+        Debug.Log($"Room creation failed: {message}");
     }
 }

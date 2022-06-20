@@ -7,11 +7,5 @@ public class MasterManager : SingeltonScriptableObject<MasterManager>
 {
     [SerializeField]
     private GameSettings _gameSettings;
-    public static GameSettings GameSettings
-    {
-        get
-        {
-            return instance._gameSettings;
-        }
-    }
+    public static GameSettings GameSettings => Instance._gameSettings;
 }

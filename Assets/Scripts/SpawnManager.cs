@@ -6,45 +6,63 @@ using Photon.Realtime;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _player;/*, _playerBoard, _eventHandler;
-    [SerializeField] private Transform _gameCanvasTransform;
+    #region Prefab references
+    [SerializeField] private GameObject _player;
 
-    private GameObject _gameCanvas;
-    //public float _minX, _minZ, _maxX, _maxZ;
-    */
-    void Start()
+    private Transform _tableTransform;
+    private GameObject _gameCanvas, _playerTable, _playerBoard;
+    #endregion
+
+    private void Awake()
     {
-        //_gameCanvas = GameObject.Find(_gameCanvasTransform.name);
-
-        InitializeDuel();
-        //Vector3 randomPos = new Vector3(Random.Range(_minX, _maxX), 0.5f, Random.Range(_minZ, _maxZ));
-        //PhotonNetwork.Instantiate(_playerPrefab.name, randomPos, Quaternion.identity);
-        //PhotonNetwork.InstantiateRoomObject(_patientPrefab.name, _patientSpawner.position, _patientPrefab.transform.rotation);
+        
     }
 
-    private void InitializeDuel()
+    void Start()
     {
-        GameObject myPlayer = PhotonNetwork.Instantiate(_player.name, Vector3.zero, Quaternion.identity);
-        PlayerController playerController = myPlayer.GetComponent<PlayerController>();
-        myPlayer.name = playerController.playerPhotonView.Owner.NickName;
-        DontDestroyOnLoad(myPlayer);
+        _gameCanvas = GameObject.Find("Game Canvas");
+        _gameCanvas.transform.position = Vector2.zero;
 
-        
-        //_gameCanvas.transform.position = Vector2.zero;
-        //
-        //GameObject player1EventHandlerGO = PhotonNetwork.Instantiate(_eventHandler.name, Vector3.zero, Quaternion.identity);
-        //player1EventHandlerGO.name = $"{PhotonNetwork.LocalPlayer.NickName} Event Handler";
-        //
-        //GameObject player1Board = PhotonNetwork.Instantiate(_playerBoard.name, Vector3.zero, Quaternion.identity);
-        //player1Board.name = $"{PhotonNetwork.LocalPlayer.NickName} Board";
-        //
-        //player1Board.transform.parent = _gameCanvas.transform;
-        //
-        //DontDestroyOnLoad(_gameCanvas);
-        //
-        //GameObject player2Board = PhotonNetwork.Instantiate("Player Board", Vector3.zero, Quaternion.identity);
-        //player2Board.name = "Player2 Board";
-        //player2Board.transform.parent = _gameCanvas;
-        //player2Board.transform.rotation = new Quaternion(0f, 0f, 180f, 0f);
+        GameObject player = PhotonNetwork.Instantiate(_player.name, Vector3.zero, Quaternion.identity);
+
+        InitializePlayer();
+    }
+
+    private void InitializePlayer()
+    {
+        Player[] playersInRoom = PhotonNetwork.PlayerList;
+
+        for (int i = 0; i < playersInRoom.Length; i++)
+        {
+            if (PhotonNetwork.LocalPlayer != playersInRoom[i])
+                continue;
+
+            _playerTable = PhotonNetwork.Instantiate("Player Table", Vector3.zero, Quaternion.identity);
+            _playerTable.name = $"Player {PhotonNetwork.LocalPlayer.ActorNumber} Table";
+
+            _playerBoard = PhotonNetwork.Instantiate("Player Board", Vector3.zero, Quaternion.identity);
+            _playerBoard.name = $"Player {PhotonNetwork.LocalPlayer.ActorNumber} Board";
+            _playerBoard.transform.SetParent(_gameCanvas.transform);
+
+            switch (playersInRoom[i].ActorNumber)
+            {
+                case 1:
+                    _tableTransform = GameObject.Find("Player 1 Table Position").transform;
+                    break;
+
+                case 2:
+                    _tableTransform = GameObject.Find("Player 2 Table Position").transform;
+                    _playerTable.transform.rotation = new Quaternion(0f, 0f + 180f, _playerTable.transform.rotation.z, 0f);
+
+                    break;
+
+                default:
+
+                    break;
+            }
+
+            _playerTable.transform.position = _tableTransform.position;
+            _playerTable.transform.SetParent(_tableTransform);
+        }
     }
 }
