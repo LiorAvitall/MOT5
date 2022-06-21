@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Photon.Pun;
 using Photon.Realtime;
@@ -8,9 +9,12 @@ using Photon.Realtime;
 public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     #region Photon
+    [Header("Photon")]
     [SerializeField] private PhotonView _playerPhotonView;
     public PhotonView PlayerPhotonView => _playerPhotonView;
     #endregion
+
+    
 
     #region GameObjects References
     private GameObject _gameCanvas, _playerUI;
@@ -18,35 +22,45 @@ public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHa
     #endregion
 
     #region Game Components
-    private Hand _hand;
-    private Battlefield _battlefield;
-    private Deck _deck;
-    private Tomb _tomb;
+    private NewHand _hand;
+    private NewBattlefield _battlefield;
+    private NewDeck _deck;
+    private NewTomb _tomb;
+
+    public NewHand Hand => _hand;
+    public NewBattlefield Battlefield => _battlefield;
+    public NewDeck Deck => _deck;
+    public NewTomb Tomb => _tomb;
     #endregion
 
+    private Button _endPhaseBtn;
+
+    #region Indicators
     private GameObject _currentTarget;
     private bool _isMyTurn, _isPhaseDone;
-    
+    public bool IsMyTurn { get => _isMyTurn; set => _isMyTurn = value; }
+    #endregion
+
     #region State Machine
     private delegate void State();
     private State _currentState;
     #endregion
 
+    #region Monobehavior Callbacks
     private void Start()
     {
         _gameCanvas = GameObject.Find("Game Canvas");
         InitializePlayer();
 
         _currentState = Standby;
+        GameManager.Instance.PlayerList.Add(this);
     }
 
-    #region Monobehavior Callbacks
     private void Update()
     {
-        Debug.Log($"{_currentState}");
-
         if (_isMyTurn)
         {
+            Debug.Log($"Turn Start: {name}");
             _currentState.Invoke();
         }
         else
@@ -73,13 +87,8 @@ public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHa
     {
         Debug.Log($"{name} inisiated: Draw Phase");
 
-        // draw card from deck
-
-        if (_isPhaseDone)
-        {
-            _currentState = ActionPhase;
-            _isPhaseDone = false;
-        }
+        _deck.PhotonView.RPC("DrawCard", RpcTarget.All);
+        _currentState = ActionPhase;
     }
 
     private void ActionPhase()
@@ -194,48 +203,36 @@ public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHa
                 _deckGO = _playerUI.transform.GetChild(2).gameObject;
                 _tombGO = _playerUI.transform.GetChild(3).gameObject;
 
-                _hand = _handGO.GetComponent<Hand>();
-                _battlefield = _battlefieldGO.GetComponent<Battlefield>();
-                _deck = _deckGO.GetComponent<Deck>();
-                _tomb = _tombGO.GetComponent<Tomb>();
+                _hand = _handGO.GetComponent<NewHand>();
+                _battlefield = _battlefieldGO.GetComponent<NewBattlefield>();
+                _deck = _deckGO.GetComponent<NewDeck>();
+                _tomb = _tombGO.GetComponent<NewTomb>();
+                _endPhaseBtn = _playerUI.transform.GetChild(4).GetComponent<Button>();
+
+                _hand.PlayerPhotonView = _playerPhotonView;
+                _battlefield.PlayerPhotonView = _playerPhotonView;
+                _deck.PlayerPhotonView = _playerPhotonView;
+                _tomb.PlayerPhotonView = _playerPhotonView;
+                _endPhaseBtn.onClick.AddListener(ChangePhase);
 
                 _currentState = Standby;
             }
-            else
-            {
-                return;
-            }
 
+            return;
+        }
+    }
+
+    public void ChangePhase()
+    {
+        if (!_isPhaseDone)
+        {
+            _isPhaseDone = true;
         }
 
-        
-
-        
-
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    _playerUI = _gameCanvas.transform.GetChild(0).gameObject;
-        //}
-        //else
-        //{
-        //    _playerUI = _gameCanvas.transform.GetChild(1).gameObject;
-        //}
-
-        //for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
-        //{
-        //    if (_playerPhotonView.ViewID == )
-        //    {
-        //
-        //    }
-        //}
-
-        //Player[] playersInRoom = PhotonNetwork.PlayerList;
-        //
-        //for (int i = 0; i < playersInRoom.Length; i++)
-        //{
-        //    if (PhotonNetwork.LocalPlayer != playersInRoom[i])
-        //        continue;
-        //}
+        Debug.Log("Changed Phase");
     }
+    #endregion
+
+    #region PunRPC Methods
     #endregion
 }

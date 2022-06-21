@@ -8,14 +8,19 @@ using Photon.Realtime;
 public class NewHand : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     #region Photon
+    [Header("Photon")]
     [SerializeField] private PhotonView _photonView;
+    public PhotonView PhotonView => _photonView;
+
+    [SerializeField] private PhotonView _playerPhotonView;
+    public PhotonView PlayerPhotonView { get => _playerPhotonView; set => _playerPhotonView = value; }
     #endregion
 
     [Header("AspectList")]
     public List<CardData> CardsInHand;
 
     [Header("CurrentAspects")]
-    public NewCard CurrentCardInHand;
+    public Card CurrentCardInHand;
     public CardData CurrentCardDataInHand;
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -27,7 +32,7 @@ public class NewHand : MonoBehaviour, IDropHandler, IPointerClickHandler, IPoint
             if (eventData.pointerDrag == null)
                 return;
 
-            NewCard currentCard = eventData.pointerDrag.GetComponent<NewCard>();
+            Card currentCard = eventData.pointerDrag.GetComponent<Card>();
 
             CurrentCardInHand = currentCard;
             CurrentCardDataInHand = currentCard.GetComponent<CardDisplay>().CardData;

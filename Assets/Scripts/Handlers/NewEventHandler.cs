@@ -91,17 +91,17 @@ public class NewEventHandler : MonoBehaviour
     public void StartGame()
     {
         // Draw first card from deck's aspect list from deck to hand
-        _myDeck.InitializeGame();
+        //_myDeck.InitializeGame();
     }
 
     public void DrawCard()
     {
-        _myDeck.DrawCard();
+        //_myDeck.DrawCard();
     }
 
     public void DrawTwo()
     {
-        MyDeck.DrawTwo();
+        //MyDeck.DrawTwo();
     }
 
     public void Sacrifice()

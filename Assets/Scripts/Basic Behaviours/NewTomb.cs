@@ -9,14 +9,19 @@ using Photon.Realtime;
 public class NewTomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     #region Photon
+    [Header("Photon")]
     [SerializeField] private PhotonView _photonView;
+    public PhotonView PhotonView => _photonView;
+
+    [SerializeField] private PhotonView _playerPhotonView;
+    public PhotonView PlayerPhotonView { get => _playerPhotonView; set => _playerPhotonView = value; }
     #endregion
 
     [Header("AspectList")]
     public List<CardData> CardsInTomb;
 
     [Header("CurrentAspects")]
-    public Card CurrentCardInHand;
+    public Card CurrentCardInTomb;
     public CardData CurrentCardDataInTomb;
 
     public void OnPointerEnter(PointerEventData eventData)

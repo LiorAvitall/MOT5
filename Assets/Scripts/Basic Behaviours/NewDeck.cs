@@ -10,24 +10,28 @@ using Photon.Realtime;
 public class NewDeck : MonoBehaviour
 {
     #region Photon
+    [Header("Photon")]
     [SerializeField] private PhotonView _photonView;
+    public PhotonView PhotonView => _photonView;
+
+    [SerializeField] private PhotonView _playerPhotonView;
+    public PhotonView PlayerPhotonView { get => _playerPhotonView; set => _playerPhotonView = value; }
     #endregion
 
-    [Header("AspectList")]
-    [SerializeField] private List<CardData> _aspectsInDeck = new List<CardData>(25);
+    [Header("AspectData")]
+    [SerializeField] private CardData _lightCard;
+    [SerializeField] private CardData _deathCard, _destructionCard, _lifeCard, _controlCard;
 
     [Header("AspectPrefab")]
     [SerializeField] private GameObject _cardPrefab;
 
-    [Header("AspectData")]
-    [SerializeField] private CardData _lightCard;
+    [Header("AspectList")]
+    [SerializeField] private List<CardData> _aspectsInDeck = new List<CardData>(25);
 
-    [SerializeField]
-    private CardData _deathCard, _destructionCard, _lifeCard, _controlCard;
+    [Header("Required Components")]
+    [SerializeField] private NewHand _hand;
 
     private int _maxDeckSize = 25, _currentDeckSize;
-
-    public Button OnClickDeck;
 
     private void Start()
     {
@@ -62,48 +66,24 @@ public class NewDeck : MonoBehaviour
         }
     }
 
-    public void InitializeGame()
-    {
-        if (_photonView.IsMine)
-        {
-            //get top 4 cards in deck
-            List<CardData> cardsToHand = _aspectsInDeck.GetRange(0, 4);
-
-            //add said cards to hand
-            //_dataHandler.HandData.CardsInHand.AddRange(cardsToHand);
-
-            //loops through said cards's data, reads it and creates a prefab based on that data in the hand
-            foreach (CardData cardata in cardsToHand)
-            {
-                _cardPrefab.GetComponent<CardDisplay>().CardData = cardata;
-                Instantiate(_cardPrefab, NewEventHandler.Instance.MyHand.transform);
-
-                //check if works (update: it does)
-                print(cardata.Name);
-            }
-
-            //remove drawn cards from deck
-            _aspectsInDeck.RemoveRange(0, 4);
-            _currentDeckSize -= 4;
-        }   
-    }
-
-    public void DrawCard()
+    [PunRPC]
+    private void DrawCard()
     {
         if (_photonView.IsMine)
         {
             Debug.Log("Drawing Card");
             //get top card in deck & adds it to the hand
-            NewEventHandler.Instance.MyHand.CardsInHand.Add(_aspectsInDeck[0]);
+            _hand.CardsInHand.Add(_aspectsInDeck[0]);
 
             //reads said card data and creates a prefab based on that data in the hand
             _cardPrefab.GetComponent<CardDisplay>().CardData = _aspectsInDeck[0];
 
             //Instantiate(_cardPrefab, NewEventHandler.Instance.MyHand.transform);
             GameObject drawnCard = PhotonNetwork.Instantiate("Aspect Prefab", Vector2.zero, Quaternion.identity);
-            drawnCard.transform.parent = NewEventHandler.Instance.MyHand.transform;
+            drawnCard.transform.parent = _hand.transform;
+
             //check if works (update: it does)
-            print(_aspectsInDeck[0].Name);
+            Debug.Log(_aspectsInDeck[0].Name);
 
             _aspectsInDeck.RemoveAt(0);
             _currentDeckSize--;
@@ -114,29 +94,62 @@ public class NewDeck : MonoBehaviour
         }
     }
 
-    public void DrawTwo()
+    [PunRPC]
+    private void DrawTwo()
     {
         if (_photonView.IsMine)
         {
+            Debug.Log("Drawing Two Cards");
             //get top 2 cards in deck
             List<CardData> cardsToHand = _aspectsInDeck.GetRange(0, 2);
 
             //add said cards to hand
-            NewEventHandler.Instance.MyHand.CardsInHand.AddRange(cardsToHand);
+            _hand.CardsInHand.AddRange(cardsToHand);
 
             //loops through said cards's data, reads it and creates a prefab based on that data in the hand
             foreach (CardData card in cardsToHand)
             {
                 _cardPrefab.GetComponent<CardDisplay>().CardData = card;
-                Instantiate(_cardPrefab, NewEventHandler.Instance.MyHand.transform);
+                Instantiate(_cardPrefab, _hand.transform);
 
                 //check if works (update: it does)
-                print(card.Name);
+                Debug.Log(card.Name);
             }
 
             //remove drawn cards from deck
             _aspectsInDeck.RemoveRange(0, 2);
             _currentDeckSize -= 2;
         }
+        else
+        {
+            Debug.Log("This is not your deck");
+        }
     }
+
+    // Old Code
+    //public void InitializeGame()
+    //{
+    //    if (_photonView.IsMine)
+    //    {
+    //        //get top 4 cards in deck
+    //        List<CardData> cardsToHand = _aspectsInDeck.GetRange(0, 4);
+    //
+    //        //add said cards to hand
+    //        //_dataHandler.HandData.CardsInHand.AddRange(cardsToHand);
+    //
+    //        //loops through said cards's data, reads it and creates a prefab based on that data in the hand
+    //        foreach (CardData cardata in cardsToHand)
+    //        {
+    //            _cardPrefab.GetComponent<CardDisplay>().CardData = cardata;
+    //            Instantiate(_cardPrefab, NewEventHandler.Instance.MyHand.transform);
+    //
+    //            //check if works (update: it does)
+    //            print(cardata.Name);
+    //        }
+    //
+    //        //remove drawn cards from deck
+    //        _aspectsInDeck.RemoveRange(0, 4);
+    //        _currentDeckSize -= 4;
+    //    }   
+    //}
 }

@@ -42,8 +42,8 @@ public class NewCard : MonoBehaviour, IPointerEnterHandler, IDragHandler, IBegin
 
     private void Start()
     {
-        _cardData = GetComponent<CardDisplay>().CardData;
-        _state = InHand;
+        //_cardData = GetComponent<CardDisplay>().CardData;
+        //_state = InHand;
     }
 
     private void Update()

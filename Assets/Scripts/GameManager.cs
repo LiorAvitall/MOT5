@@ -9,21 +9,17 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    #region Photon
-    [SerializeField] private PhotonView _photonView;
-    #endregion
+    //#region Photon
+    //[SerializeField] private PhotonView _photonView;
+    //#endregion
 
-    [SerializeField] private GameObject _playerBoard, _eventHandler;
-    [SerializeField] private Transform _gameCanvas;
-
-    [SerializeField] public List<PlayerController> PlayerList;
+    public List<PlayerControllerTest> PlayerList;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else if (Instance != this)
         {
@@ -50,5 +46,23 @@ public class GameManager : MonoBehaviour
     private void TeamFight()
     {
         // Run [2 vs 2] envirnoment & rules
+    }
+
+    public void ForceTurn(int actorNumber)
+    {
+        switch (actorNumber)
+        {
+            case 1:
+                PlayerList[0].IsMyTurn = true;
+                break;
+
+            case 2:
+                PlayerList[1].IsMyTurn = true;
+                break;
+
+            default:
+                Debug.Log($"Something went wrong with 'ForceTurn'");
+                break;
+        }
     }
 }
