@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5011396549614410958}
   - component: {fileID: 5506112667116784064}
-  - component: {fileID: 7592870175515264566}
   - component: {fileID: 4782212405181470203}
   - component: {fileID: 2214949393908253868}
+  - component: {fileID: 7592870175515264566}
   - component: {fileID: 8684959511026176361}
   m_Layer: 5
   m_Name: Hearthstone 2D cardPrefab small
@@ -55,26 +55,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1626021463518533258}
   m_CullTransparentMesh: 1
---- !u!114 &7592870175515264566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1626021463518533258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81b9379e27093cd469ac394adb1b703f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CardData: {fileID: 11400000, guid: 47f538589d029c8478f2a29fd89a6175, type: 2}
-  ArtworkImage: {fileID: 7959633829859891840}
-  CardTemplate: {fileID: 8686754593346325599}
-  NameText: {fileID: 1291417566743020456}
-  DescriptionText: {fileID: 8171771030956206742}
-  ManaText: {fileID: 6431020146634632095}
-  AttackText: {fileID: 6069094076335098066}
-  HealthText: {fileID: 1434858498014978208}
 --- !u!225 &4782212405181470203
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -107,6 +87,26 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &7592870175515264566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626021463518533258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81b9379e27093cd469ac394adb1b703f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CardData: {fileID: 11400000, guid: 47f538589d029c8478f2a29fd89a6175, type: 2}
+  ArtworkImage: {fileID: 7959633829859891840}
+  CardTemplate: {fileID: 8686754593346325599}
+  NameText: {fileID: 1291417566743020456}
+  DescriptionText: {fileID: 8171771030956206742}
+  ManaText: {fileID: 6431020146634632095}
+  AttackText: {fileID: 6069094076335098066}
+  HealthText: {fileID: 1434858498014978208}
 --- !u!114 &8684959511026176361
 MonoBehaviour:
   m_ObjectHideFlags: 0
