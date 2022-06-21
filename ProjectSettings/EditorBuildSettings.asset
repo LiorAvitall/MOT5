@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Rooms.unity
     guid: 2e701dbaa7767b14b9d80a023f728f13
   - enabled: 1
+    path: Assets/Scenes/Duel Test.unity
+    guid: 1b4100be0b0fd9440a39a47860a92fbb
+  - enabled: 0
     path: Assets/Scenes/Duel.unity
     guid: 93d92df88929e4644b97c9f8ab2ecd5f
   - enabled: 0

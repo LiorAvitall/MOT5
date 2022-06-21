@@ -11,5 +11,5 @@ public class GameSettings : ScriptableObject
     public string GameVersion => _gameVersion;
 
     [SerializeField] private string _nickName = "Player";
-    public string NickName => _nickName + PhotonNetwork.LocalPlayer.ActorNumber.ToString();
+    public string NickName => _nickName + " " + PhotonNetwork.LocalPlayer.ActorNumber;
 }

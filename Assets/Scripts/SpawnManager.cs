@@ -20,12 +20,19 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        _gameCanvas = GameObject.Find("Game Canvas");
-        _gameCanvas.transform.position = Vector2.zero;
+        //_gameCanvas = GameObject.Find("Game Canvas");
+        //_gameCanvas.transform.position = Vector2.zero;
+        //Player[] playersInRoom = PhotonNetwork.PlayerList;
+        //for (int i = 0; i < playersInRoom.Length; i++)
+        //{
+        //    if (PhotonNetwork.LocalPlayer.ActorNumber != playersInRoom[i].ActorNumber)
+        //        continue;
+        //
+        //    return;
+        //}
 
         GameObject player = PhotonNetwork.Instantiate(_player.name, Vector3.zero, Quaternion.identity);
-
-        InitializePlayer();
+        player.name = $"Player {PhotonNetwork.LocalPlayer.ActorNumber}";
     }
 
     private void InitializePlayer()
