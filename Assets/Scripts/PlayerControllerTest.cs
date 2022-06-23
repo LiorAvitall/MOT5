@@ -35,8 +35,9 @@ public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHa
 
     #region Indicators
     private GameObject _currentTarget;
-    private bool _isMyTurn, _isPhaseDone;
+    private bool _isMyTurn, _isPhaseDone, _isNegating, _isOnStandby, _isOnDraw, _isOnAction, _isOnNegate, _isOnReaction, _isOnEnd, _tryAction;
     public bool IsMyTurn { get => _isMyTurn; set => _isMyTurn = value; }
+    public bool IsNegating => _isNegating;
     #endregion
 
     #region State Machine
@@ -50,30 +51,31 @@ public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHa
         _gameCanvas = GameObject.Find("Game Canvas");
         InitializePlayer();
 
-        _currentState = Standby;
+        _currentState = StandbyPhase;
         GameManager.Instance.PlayerList.Add(this);
     }
 
     private void Update()
     {
-        if (_isMyTurn)
-        {
-            Debug.Log($"Turn Start: {name}");
-            _currentState.Invoke();
-        }
-        else
-        {
-            // change user turn
-        }
+        Debug.Log($"Turn Start: {name}");
+        _currentState.Invoke();
+
+        // if (_opponePlayerController.TryAction)
+        // {
+        //      _isNegating = true;
+        //      _currentState = NegationPhase;
+        // }
     }
     #endregion
 
     #region States
-    private void Standby()
+    private void StandbyPhase()
     {
         Debug.Log($"{name} inisiated: Standby Phase");
 
         // not active
+        _isOnEnd = false;
+        _isOnStandby = true;
 
         if (_isMyTurn)
         {
@@ -85,6 +87,9 @@ public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHa
     {
         Debug.Log($"{name} inisiated: Draw Phase");
 
+        _isOnStandby = false;
+        _isOnDraw = true;
+
         _deck.PhotonView.RPC("DrawCard", RpcTarget.All);
         _currentState = ActionPhase;
     }
@@ -93,12 +98,18 @@ public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHa
     {
         Debug.Log($"{name} inisiated: Action Phase");
 
+        _isOnDraw = false;
+        _isOnAction = true;
         // use card from hand to the battlefield
+
+        // if (PlacedCardOnBattlefield())
+        // {
+        //     _tryAction = true;
+        // }
 
         if (_isPhaseDone)
         {
             _currentState = NegatePhase;
-            _isPhaseDone = false;
         }
     }
 
@@ -106,12 +117,30 @@ public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHa
     {
         Debug.Log($"{name} inisiated: Negation Phase");
 
-        // while not my turn, if opponent made an action if I have the correct requirments, cancel that action's effect
-
-        if (_isPhaseDone)
+        if (_isNegating)
         {
-            _currentState = ReactionPhase;
-            _isPhaseDone = false;
+            // if (requirments Met)
+            // {
+            //      negation phase action
+            //      _currentState = NegatePhase;
+            // }
+            // else
+            // {
+            //      _isNegating = false;
+            //      _currentState = NegatePhase;
+            // }
+        }
+        else
+        {
+            if (_isMyTurn)
+            {
+                _currentState = ReactionPhase;
+            }
+            else
+            {
+                _currentState = StandbyPhase;
+            }
+
         }
     }
 
@@ -119,6 +148,8 @@ public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHa
     {
         Debug.Log($"{name} inisiated: Reaction Phase");
 
+        _isOnAction = false;
+        _isOnReaction = true;
         // if not negated play action effect
 
         if (_isPhaseDone)
@@ -132,11 +163,14 @@ public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHa
     {
         Debug.Log($"{name} inisiated: End Phase");
 
-        if (_isMyTurn)
+        _isOnReaction = false;
+        _isOnEnd = true;
+
+        if (_isPhaseDone)
         {
             _isMyTurn = false;
             _isPhaseDone = false;
-            _currentState = DrawPhase;
+            _currentState = StandbyPhase;
         }
     }
     #endregion
@@ -213,7 +247,7 @@ public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHa
                 _tomb.PlayerPhotonView = _playerPhotonView;
                 _endPhaseBtn.onClick.AddListener(ChangePhase);
 
-                _currentState = Standby;
+                _currentState = StandbyPhase;
             }
 
             return;
