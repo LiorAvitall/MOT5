@@ -91,7 +91,7 @@ public class Deck : MonoBehaviour
         //get top 4 cards in deck
         for (int i = 0; i < _aspectsInDeck.Count; i++)
         {
-            if (_aspectsInDeck[i].name == "OldLightAspect")
+            if (_aspectsInDeck[i].Name == "Light")
             {
                 cardsToHand.Add(_aspectsInDeck[i]);
                 break;
@@ -100,7 +100,7 @@ public class Deck : MonoBehaviour
 
         for (int i = 0; i < _aspectsInDeck.Count; i++)
         {
-            if (_aspectsInDeck[i].name == "OldLifeAspect")
+            if (_aspectsInDeck[i].Name == "Life")
             {
                 cardsToHand.Add(_aspectsInDeck[i]);
                 break;
@@ -109,7 +109,7 @@ public class Deck : MonoBehaviour
 
         for (int i = 0; i < _aspectsInDeck.Count; i++)
         {
-            if (_aspectsInDeck[i].name == "OldDeathAspect")
+            if (_aspectsInDeck[i].Name == "Death")
             {
                 cardsToHand.Add(_aspectsInDeck[i]);
                 break;
@@ -118,7 +118,7 @@ public class Deck : MonoBehaviour
 
         for (int i = 0; i < _aspectsInDeck.Count; i++)
         {
-            if (_aspectsInDeck[i].name == "OldControlAspect")
+            if (_aspectsInDeck[i].Name == "Control")
             {
                 cardsToHand.Add(_aspectsInDeck[i]);
                 break;
