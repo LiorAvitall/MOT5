@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5011396549614410958}
   - component: {fileID: 5506112667116784064}
-  - component: {fileID: 7592870175515264566}
   - component: {fileID: 4782212405181470203}
   - component: {fileID: 2214949393908253868}
-  - component: {fileID: 8684959511026176361}
+  - component: {fileID: 9005552548177379083}
+  - component: {fileID: 7551407556406048828}
   m_Layer: 5
   m_Name: OldAspectCard
   m_TagString: Untagged
@@ -50,22 +50,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1626021463518533258}
   m_CullTransparentMesh: 1
---- !u!114 &7592870175515264566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1626021463518533258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81b9379e27093cd469ac394adb1b703f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CardData: {fileID: 11400000, guid: e933b98903f95f14eaed4bdc68fb406c, type: 2}
-  ArtworkImage: {fileID: 7959633829859891840}
-  CardTemplate: {fileID: 8686754593346325599}
-  NameText: Name auto-generated
 --- !u!225 &4782212405181470203
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -98,7 +82,7 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &8684959511026176361
+--- !u!114 &9005552548177379083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,12 +91,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1626021463518533258}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf140f378bb6596459bbef6123646486, type: 3}
+  m_Script: {fileID: 11500000, guid: fab225f1c9aa47b4d84afbdb7d93052a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CardData: {fileID: 11400000, guid: 835c7c29b8ba990408773727f94e49ea, type: 2}
+  ArtworkImage: {fileID: 7959633829859891840}
+  CardTemplate: {fileID: 8686754593346325599}
+  NameText: Name auto-generated
+--- !u!114 &7551407556406048828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626021463518533258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a25a9331cebb6584383f58af19714f92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 4782212405181470203}
-  _onHoverOffsetHand: 86.666664
-  _onHoverOffsetBattleField: 40
+  _onHoverOffsetHand: 160
+  _onHoverOffsetBattleField: 80
   ParentToReturn: {fileID: 0}
   ParentToReturnPlaceholder: {fileID: 0}
   IsCardInHand: 1

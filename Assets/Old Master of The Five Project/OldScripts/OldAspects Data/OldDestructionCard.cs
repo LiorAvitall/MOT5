@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Destruction Card", menuName = "Card/Destruction")]
+[CreateAssetMenu(fileName = "Destruction Card", menuName = "Old Card/Destruction")]
 public class OldDestructionCard : OldCardData
 {
 	public OldDestructionCard()

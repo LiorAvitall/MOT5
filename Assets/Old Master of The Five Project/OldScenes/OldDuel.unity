@@ -152,17 +152,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 80560090}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 442bcf27cfa2fdc448d4ef7d3268b874, type: 3}
+  m_Script: {fileID: 11500000, guid: 54cc2da3190e45c40b7e94cf2442bf69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _dataHandler: {fileID: 95906906}
   _aspectsInDeck: []
   _cardPrefab: {fileID: 1626021463518533258, guid: 798353e00ea222242af7c0f626c3af76, type: 3}
-  _lightCard: {fileID: 11400000, guid: e933b98903f95f14eaed4bdc68fb406c, type: 2}
-  _deathCard: {fileID: 11400000, guid: 60aa827cf1816cd4fa2e8c0e06552139, type: 2}
-  _destructionCard: {fileID: 11400000, guid: 47f538589d029c8478f2a29fd89a6175, type: 2}
-  _lifeCard: {fileID: 0}
-  _controlCard: {fileID: 11400000, guid: c55893f33d7ecae45b663e00b294a007, type: 2}
+  _lightCard: {fileID: 11400000, guid: 835c7c29b8ba990408773727f94e49ea, type: 2}
+  _deathCard: {fileID: 11400000, guid: 5f6397cf631d1f94a9c1be4d6f08bacd, type: 2}
+  _destructionCard: {fileID: 11400000, guid: cdb7268e0176e5e489c06f4c40f9f714, type: 2}
+  _lifeCard: {fileID: 11400000, guid: 3cd69a67ba7c2ac4294f39ab3e031a01, type: 2}
+  _controlCard: {fileID: 11400000, guid: 1ad42b4f9e68b684587636a96dd598fb, type: 2}
 --- !u!114 &80560092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,7 +208,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 513748288}
-        m_TargetAssemblyTypeName: EventHandler, Assembly-CSharp
+        m_TargetAssemblyTypeName: OldEventHandler, Assembly-CSharp
         m_MethodName: DrawCard
         m_Mode: 1
         m_Arguments:
@@ -363,7 +363,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 95906905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93e8a8669e037f24589ae12c226718ca, type: 3}
+  m_Script: {fileID: 11500000, guid: f07f987624d721a47a61a0e7e0de6fff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   DeckData: {fileID: 80560091}
@@ -373,6 +373,7 @@ MonoBehaviour:
   TombData: {fileID: 1829607665}
   SacrificeOverlay: {fileID: 1245189842}
   LastPlacedCardOnBattelfield: {fileID: 0}
+  IsReviving: 0
   IsSacrificing: 0
   IsDestroying: 0
 --- !u!4 &95906907
@@ -437,7 +438,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 135545781}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff91d5b99c7f90749aa935e00c1bca9a, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e5ae9b763b53154bb5e40f1161c9eea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _dataHandler: {fileID: 807809938}
@@ -1132,12 +1133,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 513748287}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb732b77664aab2469f7f6e83fd2bd5e, type: 3}
+  m_Script: {fileID: 11500000, guid: ad37f58aa404a6b4b83a321a1dc06e20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _myDataHandler: {fileID: 95906906}
   _opponentDataHandler: {fileID: 807809938}
-  TargetLine: {fileID: 0}
 --- !u!4 &513748289
 Transform:
   m_ObjectHideFlags: 0
@@ -1837,7 +1837,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 796843877}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e231fe2920d4b0a4f90aa519c560ae55, type: 3}
+  m_Script: {fileID: 11500000, guid: f7d2ff255fafa2b4ba0888b3e5dd6c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _myDataHandler: {fileID: 95906906}
@@ -1955,16 +1955,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 807809937}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93e8a8669e037f24589ae12c226718ca, type: 3}
+  m_Script: {fileID: 11500000, guid: f07f987624d721a47a61a0e7e0de6fff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   DeckData: {fileID: 1154302017}
   HandData: {fileID: 135545783}
-  BattlefieldData: {fileID: 796843878}
+  BattlefieldData: {fileID: 1814075046}
   OpponentBattlefieldData: {fileID: 796843878}
   TombData: {fileID: 904694131}
   SacrificeOverlay: {fileID: 699309703}
   LastPlacedCardOnBattelfield: {fileID: 0}
+  IsReviving: 0
   IsSacrificing: 0
   IsDestroying: 0
 --- !u!4 &807809939
@@ -2191,12 +2192,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 904694129}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fb10c67b7ba50d4db7b388aaba3a98e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a2a2f67d7397b34bb5f421fe3ae806f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _myDataHandler: {fileID: 807809938}
   _opponentDataHandler: {fileID: 95906906}
   _myEventHandler: {fileID: 938587934}
+  _tombWindow: {fileID: 546685447}
+  _tombWindowContent: {fileID: 435056571}
   CardsInTomb: []
   CurrentCardInHand: {fileID: 0}
   CurrentCardDataInTomb: {fileID: 0}
@@ -2245,7 +2248,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 904694131}
-        m_TargetAssemblyTypeName: Tomb, Assembly-CSharp
+        m_TargetAssemblyTypeName: OldTomb, Assembly-CSharp
         m_MethodName: SearchTomb
         m_Mode: 1
         m_Arguments:
@@ -2363,12 +2366,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 938587933}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb732b77664aab2469f7f6e83fd2bd5e, type: 3}
+  m_Script: {fileID: 11500000, guid: ad37f58aa404a6b4b83a321a1dc06e20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _myDataHandler: {fileID: 807809938}
   _opponentDataHandler: {fileID: 95906906}
-  TargetLine: {fileID: 0}
 --- !u!4 &938587935
 Transform:
   m_ObjectHideFlags: 0
@@ -2412,7 +2414,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 949090806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff91d5b99c7f90749aa935e00c1bca9a, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e5ae9b763b53154bb5e40f1161c9eea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _dataHandler: {fileID: 95906906}
@@ -2849,17 +2851,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1154302015}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 442bcf27cfa2fdc448d4ef7d3268b874, type: 3}
+  m_Script: {fileID: 11500000, guid: 54cc2da3190e45c40b7e94cf2442bf69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _dataHandler: {fileID: 807809938}
   _aspectsInDeck: []
   _cardPrefab: {fileID: 1626021463518533258, guid: 798353e00ea222242af7c0f626c3af76, type: 3}
-  _lightCard: {fileID: 11400000, guid: e933b98903f95f14eaed4bdc68fb406c, type: 2}
-  _deathCard: {fileID: 11400000, guid: 60aa827cf1816cd4fa2e8c0e06552139, type: 2}
-  _destructionCard: {fileID: 11400000, guid: 47f538589d029c8478f2a29fd89a6175, type: 2}
-  _lifeCard: {fileID: 0}
-  _controlCard: {fileID: 11400000, guid: c55893f33d7ecae45b663e00b294a007, type: 2}
+  _lightCard: {fileID: 11400000, guid: 835c7c29b8ba990408773727f94e49ea, type: 2}
+  _deathCard: {fileID: 11400000, guid: 5f6397cf631d1f94a9c1be4d6f08bacd, type: 2}
+  _destructionCard: {fileID: 11400000, guid: cdb7268e0176e5e489c06f4c40f9f714, type: 2}
+  _lifeCard: {fileID: 11400000, guid: 3cd69a67ba7c2ac4294f39ab3e031a01, type: 2}
+  _controlCard: {fileID: 11400000, guid: 1ad42b4f9e68b684587636a96dd598fb, type: 2}
 --- !u!114 &1154302018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2905,7 +2907,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 938587934}
-        m_TargetAssemblyTypeName: EventHandler, Assembly-CSharp
+        m_TargetAssemblyTypeName: OldEventHandler, Assembly-CSharp
         m_MethodName: DrawCard
         m_Mode: 1
         m_Arguments:
@@ -3068,19 +3070,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 513748288}
-        m_TargetAssemblyTypeName: EventHandler, Assembly-CSharp
-        m_MethodName: StartGameShowCase
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 513748288}
-        m_TargetAssemblyTypeName: EventHandler, Assembly-CSharp
+        m_TargetAssemblyTypeName: OldEventHandler, Assembly-CSharp
         m_MethodName: CloseWindow
         m_Mode: 2
         m_Arguments:
@@ -3091,9 +3081,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 513748288}
+        m_TargetAssemblyTypeName: OldEventHandler, Assembly-CSharp
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 938587934}
-        m_TargetAssemblyTypeName: EventHandler, Assembly-CSharp
-        m_MethodName: StartGameShowCase
+        m_TargetAssemblyTypeName: OldEventHandler, Assembly-CSharp
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4174,7 +4176,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 904694131}
-        m_TargetAssemblyTypeName: Tomb, Assembly-CSharp
+        m_TargetAssemblyTypeName: OldTomb, Assembly-CSharp
         m_MethodName: CloseSearchTomb
         m_Mode: 1
         m_Arguments:
@@ -4307,7 +4309,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1829607665}
-        m_TargetAssemblyTypeName: Tomb, Assembly-CSharp
+        m_TargetAssemblyTypeName: OldTomb, Assembly-CSharp
         m_MethodName: CloseSearchTomb
         m_Mode: 1
         m_Arguments:
@@ -4404,7 +4406,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1814075044}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e231fe2920d4b0a4f90aa519c560ae55, type: 3}
+  m_Script: {fileID: 11500000, guid: f7d2ff255fafa2b4ba0888b3e5dd6c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _myDataHandler: {fileID: 807809938}
@@ -4589,12 +4591,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1829607664}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fb10c67b7ba50d4db7b388aaba3a98e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a2a2f67d7397b34bb5f421fe3ae806f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _myDataHandler: {fileID: 95906906}
   _opponentDataHandler: {fileID: 807809938}
   _myEventHandler: {fileID: 513748288}
+  _tombWindow: {fileID: 2022753818}
+  _tombWindowContent: {fileID: 91146713}
   CardsInTomb: []
   CurrentCardInHand: {fileID: 0}
   CurrentCardDataInTomb: {fileID: 0}
@@ -4643,7 +4647,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1829607665}
-        m_TargetAssemblyTypeName: Tomb, Assembly-CSharp
+        m_TargetAssemblyTypeName: OldTomb, Assembly-CSharp
         m_MethodName: SearchTomb
         m_Mode: 1
         m_Arguments:
