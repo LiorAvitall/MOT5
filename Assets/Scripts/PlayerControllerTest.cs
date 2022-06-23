@@ -14,8 +14,6 @@ public class PlayerControllerTest : MonoBehaviour, IDropHandler, IPointerEnterHa
     public PhotonView PlayerPhotonView => _playerPhotonView;
     #endregion
 
-    
-
     #region GameObjects References
     private GameObject _gameCanvas, _playerUI;
     private GameObject _handGO, _battlefieldGO, _deckGO, _tombGO;
