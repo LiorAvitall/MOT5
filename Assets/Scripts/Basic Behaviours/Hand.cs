@@ -2,28 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
+using Photon.Pun;
 
 public class Hand : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    #region Photon
+    [Header("Photon")]
+    [SerializeField] private PhotonView _playerPhotonView;
+    public PhotonView PlayerPhotonView { get => _playerPhotonView; set => _playerPhotonView = value; }
+    #endregion
+
     [Header("Data Script")]
     [SerializeField] private DataHandler _dataHandler;
 
     [Header("AspectList")]
-    public List<CardData> CardsInHand;
+    public List<AspectData> CardsInHand;
 
     [Header("CurrentAspects")]
-    public Card CurrentCardInHand;
-    public CardData CurrentCardDataInHand;
+    public Aspect CurrentCardInHand;
+    public AspectData CurrentCardDataInHand;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.pointerDrag == null)
             return;
 
-        Card currentCard = eventData.pointerDrag.GetComponent<Card>();
+        Aspect currentCard = eventData.pointerDrag.GetComponent<Aspect>();
 
         CurrentCardInHand = currentCard;
-        CurrentCardDataInHand = currentCard.GetComponent<CardDisplay>().CardData;
+        CurrentCardDataInHand = currentCard.GetComponent<AspectDisplayData>().CardData;
     }
 
     public void OnPointerClick(PointerEventData eventData)

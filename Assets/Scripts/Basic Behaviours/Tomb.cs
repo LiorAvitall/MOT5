@@ -3,20 +3,28 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine;
+using Photon.Pun;
 
 public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    #region Photon
+    [Header("Photon")]
+    [SerializeField] private PhotonView _playerPhotonView;
+    public PhotonView PlayerPhotonView { get => _playerPhotonView; set => _playerPhotonView = value; }
+    #endregion
+
     [Header("Data Script")]
     [SerializeField] private DataHandler _myDataHandler;
     [SerializeField] private DataHandler _opponentDataHandler;
     [SerializeField] private EventHandler _myEventHandler;
+    [SerializeField] private GameObject _tombWindow, _tombWindowContent;
 
     [Header("AspectList")]
-    public List<CardData> CardsInTomb;
+    public List<AspectData> CardsInTomb;
 
     [Header("CurrentAspects")]
-    public Card CurrentCardInHand;
-    public CardData CurrentCardDataInTomb;
+    public Aspect CurrentCardInHand;
+    public AspectData CurrentCardDataInTomb;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -41,7 +49,7 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
     public void CardToSacrifice(PointerEventData eventData)
     {
         //get current card
-        CardData cardToTomb = eventData.pointerDrag.GetComponent<CardDisplay>().CardData;
+        AspectData cardToTomb = eventData.pointerDrag.GetComponent<AspectDisplayData>().CardData;
 
         //add current card to tomb
         _myDataHandler.TombData.CardsInTomb.Add(cardToTomb);
@@ -52,10 +60,15 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
         //remove placed cards from hand
         _myDataHandler.HandData.CardsInHand.Remove(cardToTomb);
 
-        Destroy(eventData.pointerDrag);
+        eventData.pointerDrag.transform.SetParent(_tombWindowContent.transform);
+        eventData.pointerDrag.AddComponent<Button>();
+        Button cardBtn = eventData.pointerDrag.GetComponent<Button>();
+        cardBtn.onClick.AddListener(Revive);
 
         _myDataHandler.IsSacrificing = false;
         _myDataHandler.SacrificeOverlay.SetActive(false);
+
+
     }
 
     public void CardToDestroy(PointerEventData eventData)
@@ -64,7 +77,7 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
         //_myEventHandler.TargetLine.SetPosition(1, eventData.position);
         print("Tried drawing line");
         //get current card
-        CardData cardToTomb = eventData.pointerDrag.GetComponent<CardDisplay>().CardData;
+        AspectData cardToTomb = eventData.pointerDrag.GetComponent<AspectDisplayData>().CardData;
 
         //add current card to tomb
         _opponentDataHandler.TombData.CardsInTomb.Add(cardToTomb);
@@ -75,17 +88,43 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
         //remove placed cards from battlefield
         _opponentDataHandler.BattlefieldData.CardsInField.Remove(cardToTomb);
 
-        Destroy(eventData.pointerDrag);
+        eventData.pointerDrag.transform.SetParent(_tombWindowContent.transform);
+        eventData.pointerDrag.AddComponent<Button>();
+        Button cardBtn = eventData.pointerDrag.GetComponent<Button>();
+        cardBtn.onClick.AddListener(Revive);
+
 
         _myDataHandler.IsDestroying = false;
     }
 
-    private void Search()
+    public void Revive()
     {
-        /* Player should be able to vieww Tomb at all times
-            this is correct for all players to all tombs
-            which means that Tomb should be accesible
-            by all player at any point of the game
-        */
+        Debug.Log($"Attemting Revive: {EventSystem.current.currentSelectedGameObject.name}");
+
+        if (_myDataHandler.IsReviving)
+        {
+            GameObject currentCard = EventSystem.current.currentSelectedGameObject;
+            AspectData cardToHand = currentCard.GetComponent<AspectDisplayData>().CardData;
+            currentCard.transform.SetParent(_myDataHandler.HandData.transform);
+            _myDataHandler.HandData.CardsInHand.Add(cardToHand);
+            CardsInTomb.Remove(cardToHand);
+            Destroy(currentCard.GetComponent<Button>());
+
+            _myDataHandler.IsReviving = false;
+            CloseSearchTomb();
+
+            Debug.Log($"Revived: {cardToHand.name}");
+            return;
+        }
+    }
+
+    public void SearchTomb()
+    {
+        _tombWindow.SetActive(true);
+    }
+
+    public void CloseSearchTomb()
+    {
+        _tombWindow.SetActive(false);
     }
 }

@@ -2,21 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
+using Photon.Pun;
 
 public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+    #region Photon
+    [Header("Photon")]
+    [SerializeField] private PhotonView _playerPhotonView;
+    public PhotonView PlayerPhotonView { get => _playerPhotonView; set => _playerPhotonView = value; }
+    #endregion
+
     [Header("Data Script")]
     [SerializeField] private DataHandler _myDataHandler;
     [SerializeField] private DataHandler _opponentDataHandler;
     [SerializeField] private EventHandler _myEventHandler;
 
     [Header("AspectList")]
-    public List<CardData> CardsInField;
+    public List<AspectData> CardsInField;
 
     [Header("CurrentAspects")]
-    public Card CurrentCardInBattlefield;
-    public CardData CurrentCardDataInBattlefield;
-
+    public Aspect CurrentCardInBattlefield;
+    public AspectData CurrentCardDataInBattlefield;
 
     public PointerEventData ClickEventData;
     public void OnPointerEnter(PointerEventData eventData)
@@ -24,10 +30,10 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
         if (eventData.pointerDrag == null)
             return;
 
-        Card currentCard = eventData.pointerDrag.GetComponent<Card>();
+        Aspect currentCard = eventData.pointerDrag.GetComponent<Aspect>();
 
         CurrentCardInBattlefield = currentCard;
-        CurrentCardDataInBattlefield = currentCard.GetComponent<CardDisplay>().CardData;
+        CurrentCardDataInBattlefield = currentCard.GetComponent<AspectDisplayData>().CardData;
 
         if (CurrentCardInBattlefield != null)
         {
