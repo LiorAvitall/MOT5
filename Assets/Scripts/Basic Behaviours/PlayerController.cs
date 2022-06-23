@@ -109,6 +109,7 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
 
         if (_isPhaseDone)
         {
+            _isPhaseDone = false;
             _currentState = NegatePhase;
         }
     }
@@ -152,11 +153,7 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
         _isOnReaction = true;
         // if not negated play action effect
 
-        if (_isPhaseDone)
-        {
-            _currentState = EndPhase;
-            _isPhaseDone = false;
-        }
+        _currentState = EndPhase;
     }
 
     private void EndPhase()
@@ -166,12 +163,9 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
         _isOnReaction = false;
         _isOnEnd = true;
 
-        if (_isPhaseDone)
-        {
-            _isMyTurn = false;
-            _isPhaseDone = false;
-            _currentState = StandbyPhase;
-        }
+        _isMyTurn = false;
+        _isPhaseDone = false;
+        _currentState = StandbyPhase;
     }
     #endregion
 

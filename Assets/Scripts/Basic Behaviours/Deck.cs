@@ -53,6 +53,14 @@ public class Deck : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (_currentDeckSize > _maxDeckSize)
+        {
+            _currentDeckSize = _maxDeckSize;
+        }
+    }
+
     public void InitializeGame()
     {
         //get top 4 cards in deck
