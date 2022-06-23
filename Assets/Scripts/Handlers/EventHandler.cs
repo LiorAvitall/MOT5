@@ -7,8 +7,8 @@ using UnityEngine;
 public class EventHandler : MonoBehaviour
 {
     [Header("Data Script")]
-    [SerializeField] private PlayerComponentsData _myDataHandler;
-    [SerializeField] private PlayerComponentsData _opponentDataHandler;
+    [SerializeField] private PlayerData _myDataHandler;
+    [SerializeField] private PlayerData _opponentDataHandler;
 
     private int ifFiveIWin = 0;
     private bool didIWin = false;
@@ -34,29 +34,29 @@ public class EventHandler : MonoBehaviour
     public void StartGame()
     {
         // Draw first card from deck's aspect list from deck to hand
-        _myDataHandler.DeckData.InitializeGame();
+        _myDataHandler.Deck.PlayerPhotonView.RPC("InitializeGame", Photon.Pun.RpcTarget.AllBuffered);
     }
 
     public void StartGameShowCase()
     {
         // Draw first card from deck's aspect list from deck to hand
-        _myDataHandler.DeckData.InitializeGameShowCase();
+        _myDataHandler.Deck.PlayerPhotonView.RPC("InitializeGameShowCase", Photon.Pun.RpcTarget.AllBuffered);
     }
 
     public void DrawCard()
     {
-        _myDataHandler.DeckData.DrawCard();
+        _myDataHandler.Deck.PlayerPhotonView.RPC("DrawCard", Photon.Pun.RpcTarget.AllBuffered);
     }
 
     public void DrawTwo()
     {
-        _myDataHandler.DeckData.DrawTwo();
+        _myDataHandler.Deck.PlayerPhotonView.RPC("DrawTwo", Photon.Pun.RpcTarget.AllBuffered);
     }
 
     public void Revive()
     {
         _myDataHandler.IsReviving = true;
-        _myDataHandler.TombData.SearchTomb();
+        _myDataHandler.Tomb.SearchTomb();
     }
 
     public void Sacrifice()
@@ -80,13 +80,13 @@ public class EventHandler : MonoBehaviour
         AspectData cardToField = currentTarget.gameObject.GetComponent<AspectDisplayData>().CardData;
 
         //add current card to battlefield
-        _myDataHandler.BattlefieldData.CardsInField.Add(cardToField);
+        _myDataHandler.Battlefield.CardsInField.Add(cardToField);
 
         //check if works
         print(cardToField.Name);
 
         //remove placed cards from hand
-        _myDataHandler.HandData.CardsInHand.Remove(cardToField);
+        _myDataHandler.Hand.CardsInHand.Remove(cardToField);
 
         Action(cardToField);
 
@@ -97,45 +97,45 @@ public class EventHandler : MonoBehaviour
 
         // addintional code here ----- V
 
-        for (int i = 0; i < _myDataHandler.BattlefieldData.CardsInField.Count; i++)
+        for (int i = 0; i < _myDataHandler.Battlefield.CardsInField.Count; i++)
         {
-            if (_myDataHandler.BattlefieldData.CardsInField[i].PrimodialPower == PowerType.Light)
+            if (_myDataHandler.Battlefield.CardsInField[i].PrimodialPower == PowerType.Light)
             {
                 ifFiveIWin++;
                 break;
             }
         }
 
-        for (int i = 0; i < _myDataHandler.BattlefieldData.CardsInField.Count; i++)
+        for (int i = 0; i < _myDataHandler.Battlefield.CardsInField.Count; i++)
         {
-            if (_myDataHandler.BattlefieldData.CardsInField[i].PrimodialPower == PowerType.Death)
+            if (_myDataHandler.Battlefield.CardsInField[i].PrimodialPower == PowerType.Death)
             {
                 ifFiveIWin++;
                 break;
             }
         }
 
-        for (int i = 0; i < _myDataHandler.BattlefieldData.CardsInField.Count; i++)
+        for (int i = 0; i < _myDataHandler.Battlefield.CardsInField.Count; i++)
         {
-            if (_myDataHandler.BattlefieldData.CardsInField[i].PrimodialPower == PowerType.Control)
+            if (_myDataHandler.Battlefield.CardsInField[i].PrimodialPower == PowerType.Control)
             {
                 ifFiveIWin++;
                 break;
             }
         }
 
-        for (int i = 0; i < _myDataHandler.BattlefieldData.CardsInField.Count; i++)
+        for (int i = 0; i < _myDataHandler.Battlefield.CardsInField.Count; i++)
         {
-            if (_myDataHandler.BattlefieldData.CardsInField[i].PrimodialPower == PowerType.Destruction)
+            if (_myDataHandler.Battlefield.CardsInField[i].PrimodialPower == PowerType.Destruction)
             {
                 ifFiveIWin++;
                 break;
             }
         }
 
-        for (int i = 0; i < _myDataHandler.BattlefieldData.CardsInField.Count; i++)
+        for (int i = 0; i < _myDataHandler.Battlefield.CardsInField.Count; i++)
         {
-            if (_myDataHandler.BattlefieldData.CardsInField[i].PrimodialPower == PowerType.Life)
+            if (_myDataHandler.Battlefield.CardsInField[i].PrimodialPower == PowerType.Life)
             {
                 ifFiveIWin++;
                 break;

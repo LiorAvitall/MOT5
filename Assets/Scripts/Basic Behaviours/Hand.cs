@@ -13,7 +13,7 @@ public class Hand : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
     #endregion
 
     [Header("Data Script")]
-    [SerializeField] private PlayerComponentsData _dataHandler;
+    [SerializeField] private PlayerData _dataHandler;
 
     [Header("AspectList")]
     public List<AspectData> CardsInHand;
@@ -39,7 +39,7 @@ public class Hand : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
             return;
 
         else if (_dataHandler.IsSacrificing)
-            _dataHandler.TombData.CardToSacrifice(eventData);
+            _dataHandler.Tomb.CardToSacrifice(eventData);
     }
 
     public void OnDrop(PointerEventData eventData)

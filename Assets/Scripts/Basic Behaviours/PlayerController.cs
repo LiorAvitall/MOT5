@@ -10,36 +10,16 @@ public enum GameMode { Duel, Brawl, TeamFight}
 
 public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    #region Photon
-    [Header("Photon")]
-    [SerializeField] private PhotonView _photonView;
-    public PhotonView PhotonView => _photonView;
+
+    #region Data Reference
+    [Header("Data Reference")]
+    [SerializeField] private PlayerData _myData;
     #endregion
-
-    #region GameObjects References
-    private GameObject _gameCanvas, _playerUI;
-    private GameObject _handGO, _battlefieldGO, _deckGO, _tombGO;
-    #endregion
-
-    #region Game Components
-    private Hand _hand;
-    private Battlefield _battlefield;
-    private Deck _deck;
-    private Tomb _tomb;
-
-    public Hand Hand => _hand;
-    public Battlefield Battlefield => _battlefield;
-    public Deck Deck => _deck;
-    public Tomb Tomb => _tomb;
-    #endregion
-
-    Player[] playersInRoom;
-
-    private Button _endPhaseBtn;
-    private GameMode _currentGameMode;
 
     #region Indicators
     private GameObject _currentTarget;
+    private Button _endPhaseBtn;
+
     private bool _isMyTurn, _isPhaseDone, _isNegating, _isOnStandby, _isOnDraw, _isOnAction, _isOnNegate, _isOnReaction, _isOnEnd, _tryAction;
     public bool IsMyTurn { get => _isMyTurn; set => _isMyTurn = value; }
     public bool IsNegating => _isNegating;
@@ -53,27 +33,17 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
     #region Monobehavior Callbacks
     private void Start()
     {
-        _gameCanvas = GameObject.Find("Game Canvas");
-        InitializePlayer();
-
         _currentState = StandbyPhase;
         GameManager.Instance.PlayerList.Add(this);
+
+        _endPhaseBtn = _myData.PlayerUI.transform.GetChild(4).GetComponent<Button>();
+        _endPhaseBtn.onClick.AddListener(ChangePhase);
+
+        _currentState = StandbyPhase;
     }
 
     private void Update()
     {
-        if (PhotonNetwork.PlayerList.Length < 4)
-        {
-            if (_currentGameMode != GameMode.Duel)
-            {
-                playersInRoom = PhotonNetwork.PlayerList;
-            }
-            else if (PhotonNetwork.PlayerList.Length < 2)
-            {
-                playersInRoom = PhotonNetwork.PlayerList;
-            }
-        }
-
         Debug.Log($"Turn Start: {name}");
         _currentState.Invoke();
 
@@ -107,7 +77,7 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
         _isOnStandby = false;
         _isOnDraw = true;
 
-        _deck.PlayerPhotonView.RPC("DrawCard", RpcTarget.All);
+        _myData.Deck.PlayerPhotonView.RPC("DrawCard", RpcTarget.All);
         _currentState = ActionPhase;
     }
 
@@ -224,46 +194,7 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
     #endregion
 
     #region Methods
-    private void InitializePlayer()
-    {
-        Player[] playersInRoom = PhotonNetwork.PlayerList;
-        
-        for (int i = 0; i < playersInRoom.Length; i++)
-        {
-            if (_photonView.IsMine)
-            {
-                if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
-                {
-                    _playerUI = _gameCanvas.transform.GetChild(0).gameObject;
-                }
-                else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
-                {
-                    _playerUI = _gameCanvas.transform.GetChild(1).gameObject;
-                }
-
-                _handGO = _playerUI.transform.GetChild(0).gameObject;
-                _battlefieldGO = _playerUI.transform.GetChild(1).gameObject;
-                _deckGO = _playerUI.transform.GetChild(2).gameObject;
-                _tombGO = _playerUI.transform.GetChild(3).gameObject;
-
-                _hand = _handGO.GetComponent<Hand>();
-                _battlefield = _battlefieldGO.GetComponent<Battlefield>();
-                _deck = _deckGO.GetComponent<Deck>();
-                _tomb = _tombGO.GetComponent<Tomb>();
-                _endPhaseBtn = _playerUI.transform.GetChild(4).GetComponent<Button>();
-
-                _hand.PlayerPhotonView = _photonView;
-                _battlefield.PlayerPhotonView = _photonView;
-                _deck.PlayerPhotonView = _photonView;
-                _tomb.PlayerPhotonView = _photonView;
-                _endPhaseBtn.onClick.AddListener(ChangePhase);
-
-                _currentState = StandbyPhase;
-            }
-
-            return;
-        }
-    }
+    
 
     public void ChangePhase()
     {

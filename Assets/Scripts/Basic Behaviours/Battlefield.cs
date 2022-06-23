@@ -13,8 +13,8 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
     #endregion
 
     [Header("Data Script")]
-    [SerializeField] private PlayerComponentsData _myDataHandler;
-    [SerializeField] private PlayerComponentsData _opponentDataHandler;
+    [SerializeField] private PlayerData _myDataHandler;
+    [SerializeField] private PlayerData _opponentDataHandler;
     [SerializeField] private EventHandler _myEventHandler;
 
     [Header("AspectList")]
@@ -77,6 +77,6 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
 
         // need opponent eventData
         else if (_myDataHandler.IsDestroying)
-            _myDataHandler.TombData.CardToDestroy(eventData);
+            _myDataHandler.Tomb.CardToDestroy(eventData);
     }
 }

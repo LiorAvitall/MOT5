@@ -13,43 +13,43 @@ public class Deck : MonoBehaviour
     public PhotonView PlayerPhotonView { get => _playerPhotonView; set => _playerPhotonView = value; }
     #endregion
 
-    [Header("Data Script")]
-    [SerializeField] private PlayerComponentsData _dataHandler;
+    #region Data References
+    private PlayerData _playerData;
 
     [Header("AspectList")]
-    [SerializeField] private List<AspectData> _aspectsInDeck = new List<AspectData>(25);
+    [SerializeField] private List<AspectData> _deckList = new List<AspectData>(25);
 
     [Header("AspectPrefab")]
-    [SerializeField] private GameObject _cardPrefab;
+    [SerializeField] private GameObject _aspectPrefab;
 
     [Header("AspectData")]
-    [SerializeField] private AspectData _lightCard;
+    [SerializeField] private AspectData _lightAspectData;
+    [SerializeField] private AspectData _deathAspectData, _destructionAspectData, _lifeAspectData, _controlAspectData;
+    #endregion
 
-    [SerializeField]
-    private AspectData _deathCard, _destructionCard, _lifeCard, _controlCard;
-
-    private bool _isDrawingWithLight = false;
     private int _maxDeckSize = 25, _currentDeckSize;
 
     private void Start()
     {
-        _aspectsInDeck.Clear();
+        _deckList.Clear();
 
+        // Initialize _deckList
         for (int i = 0; i < 5; i++)
         {
-            _aspectsInDeck.Add(_lightCard);
-            _aspectsInDeck.Add(_deathCard);
-            _aspectsInDeck.Add(_destructionCard);
-            _aspectsInDeck.Add(_lifeCard);
-            _aspectsInDeck.Add(_controlCard);
+            _deckList.Add(_lightAspectData);
+            _deckList.Add(_deathAspectData);
+            _deckList.Add(_destructionAspectData);
+            _deckList.Add(_lifeAspectData);
+            _deckList.Add(_controlAspectData);
         }
-        //randomize _aspectsInDeck list
-        for (int i = 0; i < _aspectsInDeck.Count; i++)
+
+        // randomize _aspectsInDeck list
+        for (int i = 0; i < _deckList.Count; i++)
         {
-            AspectData temp = _aspectsInDeck[i];
-            int randomIndex = UnityEngine.Random.Range(i, _aspectsInDeck.Count);
-            _aspectsInDeck[i] = _aspectsInDeck[randomIndex];
-            _aspectsInDeck[randomIndex] = temp;
+            AspectData temp = _deckList[i];
+            int randomIndex = UnityEngine.Random.Range(i, _deckList.Count);
+            _deckList[i] = _deckList[randomIndex];
+            _deckList[randomIndex] = temp;
         }
     }
 
@@ -61,124 +61,120 @@ public class Deck : MonoBehaviour
         }
     }
 
-    public void InitializeGame()
+    [PunRPC]
+    private void InitializeGame()
     {
-        //get top 4 cards in deck
-        List<AspectData> cardsToHand = _aspectsInDeck.GetRange(0, 4);
+        // Get the top 4 cards in deck
+        List<AspectData> cardsToHand = _deckList.GetRange(0, 4);
 
-        //add said cards to hand
-        _dataHandler.HandData.CardsInHand.AddRange(cardsToHand);
+        // Add said cards to hand
+        _playerData.Hand.CardsInHand.AddRange(cardsToHand);
 
-        //loops through said cards's data, reads it and creates a prefab based on that data in the hand
+        // loops through said cards's data, reads it and creates a prefab based on that data in the hand
         foreach (AspectData card in cardsToHand)
         {
-            _cardPrefab.GetComponent<AspectDisplayData>().CardData = card;
-            Instantiate(_cardPrefab, _dataHandler.HandData.transform);
-
-            //check if works (update: it does)
-            print(card.Name);
+            _aspectPrefab.GetComponent<AspectDisplayData>().CardData = card;
+            Instantiate(_aspectPrefab, _playerData.Hand.transform);
         }
 
-        //remove drawn cards from deck
-        _aspectsInDeck.RemoveRange(0, 4);
+        // Remove drawn cards from deck
+        _deckList.RemoveRange(0, 4);
         _currentDeckSize -= 4;
     }
 
-    public void InitializeGameShowCase()
+    [PunRPC]
+    private void InitializeGameShowCase()
     {
         List<AspectData> cardsToHand = new List<AspectData>(4);
 
-        //get top 4 cards in deck
-        for (int i = 0; i < _aspectsInDeck.Count; i++)
+        // Get specific starting hand on InitializeGameShowCase
+        for (int i = 0; i < _deckList.Count; i++)
         {
-            if (_aspectsInDeck[i].Name == "Light")
+            // Get Light Aspect
+            if (_deckList[i].Name == "Light" && !cardsToHand.Contains(_deckList[i]))
             {
-                cardsToHand.Add(_aspectsInDeck[i]);
+                cardsToHand.Add(_deckList[i]);
+                continue;
+            }
+
+            // Get Life Aspect
+            if (_deckList[i].Name == "Life" && !cardsToHand.Contains(_deckList[i]))
+            {
+                cardsToHand.Add(_deckList[i]);
+                continue;
+            }
+
+            // Get Death Aspect
+            if (_deckList[i].Name == "Death" && !cardsToHand.Contains(_deckList[i]))
+            {
+                cardsToHand.Add(_deckList[i]);
+                continue;
+            }
+
+            // Get Control Aspect
+            if (_deckList[i].Name == "Control" && !cardsToHand.Contains(_deckList[i]))
+            {
+                cardsToHand.Add(_deckList[i]);
                 break;
             }
         }
 
-        for (int i = 0; i < _aspectsInDeck.Count; i++)
-        {
-            if (_aspectsInDeck[i].Name == "Life")
-            {
-                cardsToHand.Add(_aspectsInDeck[i]);
-                break;
-            }
-        }
+        // Add Aspects to hand
+        _playerData.Hand.CardsInHand = cardsToHand;
 
-        for (int i = 0; i < _aspectsInDeck.Count; i++)
-        {
-            if (_aspectsInDeck[i].Name == "Death")
-            {
-                cardsToHand.Add(_aspectsInDeck[i]);
-                break;
-            }
-        }
-
-        for (int i = 0; i < _aspectsInDeck.Count; i++)
-        {
-            if (_aspectsInDeck[i].Name == "Control")
-            {
-                cardsToHand.Add(_aspectsInDeck[i]);
-                break;
-            }
-        }
-
-        //add said cards to hand
-        _dataHandler.HandData.CardsInHand = cardsToHand;
-
-        //loops through said cards's data, reads it and creates a prefab based on that data in the hand
+        // loops through said cards's data, reads it and creates a prefab based on that data in the hand
         foreach (AspectData card in cardsToHand)
         {
-            _cardPrefab.GetComponent<AspectDisplayData>().CardData = card;
-            Instantiate(_cardPrefab, _dataHandler.HandData.transform);
+            _aspectPrefab.GetComponent<AspectDisplayData>().CardData = card;
+            Instantiate(_aspectPrefab, _playerData.Hand.transform);
 
             //check if works (update: it does)
             print(card.Name);
         }
 
-        //remove drawn cards from deck
-        _aspectsInDeck.RemoveRange(0, 4);
+        // Remove drawn cards from deck
+        _deckList.RemoveRange(0, 4);
         _currentDeckSize -= 4;
     }
 
-    public void DrawCard()
+    [PunRPC]
+    private void DrawCard()
     {
         //get top card in deck & adds it to the hand
-        _dataHandler.HandData.CardsInHand.Add(_aspectsInDeck[0]);
+        _playerData.Hand.CardsInHand.Add(_deckList[0]);
 
         //reads said card data and creates a prefab based on that data in the hand
-        _cardPrefab.GetComponent<AspectDisplayData>().CardData = _aspectsInDeck[0];
-        Instantiate(_cardPrefab, _dataHandler.HandData.transform);
+        _aspectPrefab.GetComponent<AspectDisplayData>().CardData = _deckList[0];
+        Instantiate(_aspectPrefab, _playerData.Hand.transform);
         
         //check if works (update: it does)
-        print(_aspectsInDeck[0].Name);
+        print(_deckList[0].Name);
 
-        _aspectsInDeck.RemoveAt(0);
+        _deckList.RemoveAt(0);
         _currentDeckSize --;
     }
 
-    public void DrawTwo()
+    [PunRPC]
+    private void DrawTwo()
     {
         //get top 2 cards in deck
-        List<AspectData> cardsToHand = _aspectsInDeck.GetRange(0, 2);
+        List<AspectData> cardsToHand = _deckList.GetRange(0, 2);
 
         //add said cards to hand
-        _dataHandler.HandData.CardsInHand.AddRange(cardsToHand);
+        _playerData.Hand.CardsInHand.AddRange(cardsToHand);
 
         //loops through said cards's data, reads it and creates a prefab based on that data in the hand
         foreach (AspectData card in cardsToHand)
         {
-            _cardPrefab.GetComponent<AspectDisplayData>().CardData = card;
-            Instantiate(_cardPrefab, _dataHandler.HandData.transform);
+            _aspectPrefab.GetComponent<AspectDisplayData>().CardData = card;
+            Instantiate(_aspectPrefab, _playerData.Hand.transform);
 
             //check if works (update: it does)
             print(card.Name);
         }
 
         //remove drawn cards from deck
-        _aspectsInDeck.RemoveRange(0, 2);
+        _deckList.RemoveRange(0, 2);
         _currentDeckSize -= 2;
     }
 }

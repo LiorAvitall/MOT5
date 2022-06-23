@@ -14,8 +14,8 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
     #endregion
 
     [Header("Data Script")]
-    [SerializeField] private PlayerComponentsData _myDataHandler;
-    [SerializeField] private PlayerComponentsData _opponentDataHandler;
+    [SerializeField] private PlayerData _myDataHandler;
+    [SerializeField] private PlayerData _opponentDataHandler;
     [SerializeField] private EventHandler _myEventHandler;
     [SerializeField] private GameObject _tombWindow, _tombWindowContent;
 
@@ -52,13 +52,13 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
         AspectData cardToTomb = eventData.pointerDrag.GetComponent<AspectDisplayData>().CardData;
 
         //add current card to tomb
-        _myDataHandler.TombData.CardsInTomb.Add(cardToTomb);
+        _myDataHandler.Tomb.CardsInTomb.Add(cardToTomb);
 
         //check if works
         print(cardToTomb.Name);
 
         //remove placed cards from hand
-        _myDataHandler.HandData.CardsInHand.Remove(cardToTomb);
+        _myDataHandler.Hand.CardsInHand.Remove(cardToTomb);
 
         eventData.pointerDrag.transform.SetParent(_tombWindowContent.transform);
         eventData.pointerDrag.AddComponent<Button>();
@@ -80,13 +80,13 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
         AspectData cardToTomb = eventData.pointerDrag.GetComponent<AspectDisplayData>().CardData;
 
         //add current card to tomb
-        _opponentDataHandler.TombData.CardsInTomb.Add(cardToTomb);
+        _opponentDataHandler.Tomb.CardsInTomb.Add(cardToTomb);
 
         //check if works
         print(cardToTomb.Name);
 
         //remove placed cards from battlefield
-        _opponentDataHandler.BattlefieldData.CardsInField.Remove(cardToTomb);
+        _opponentDataHandler.Battlefield.CardsInField.Remove(cardToTomb);
 
         eventData.pointerDrag.transform.SetParent(_tombWindowContent.transform);
         eventData.pointerDrag.AddComponent<Button>();
@@ -105,8 +105,8 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
         {
             GameObject currentCard = EventSystem.current.currentSelectedGameObject;
             AspectData cardToHand = currentCard.GetComponent<AspectDisplayData>().CardData;
-            currentCard.transform.SetParent(_myDataHandler.HandData.transform);
-            _myDataHandler.HandData.CardsInHand.Add(cardToHand);
+            currentCard.transform.SetParent(_myDataHandler.Hand.transform);
+            _myDataHandler.Hand.CardsInHand.Add(cardToHand);
             CardsInTomb.Remove(cardToHand);
             Destroy(currentCard.GetComponent<Button>());
 
