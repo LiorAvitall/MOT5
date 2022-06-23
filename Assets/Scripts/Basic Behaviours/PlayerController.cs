@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using Photon.Pun;
 using Photon.Realtime;
 
+public enum GameMode { Duel, Brawl, TeamFight}
+
 public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     #region Photon
@@ -31,7 +33,10 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
     public Tomb Tomb => _tomb;
     #endregion
 
+    Player[] playersInRoom;
+
     private Button _endPhaseBtn;
+    private GameMode _currentGameMode;
 
     #region Indicators
     private GameObject _currentTarget;
@@ -57,6 +62,18 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
 
     private void Update()
     {
+        if (PhotonNetwork.PlayerList.Length < 4)
+        {
+            if (_currentGameMode != GameMode.Duel)
+            {
+                playersInRoom = PhotonNetwork.PlayerList;
+            }
+            else if (PhotonNetwork.PlayerList.Length < 2)
+            {
+                playersInRoom = PhotonNetwork.PlayerList;
+            }
+        }
+
         Debug.Log($"Turn Start: {name}");
         _currentState.Invoke();
 

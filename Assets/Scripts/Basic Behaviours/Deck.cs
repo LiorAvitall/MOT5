@@ -14,7 +14,7 @@ public class Deck : MonoBehaviour
     #endregion
 
     [Header("Data Script")]
-    [SerializeField] private DataHandler _dataHandler;
+    [SerializeField] private PlayerComponentsData _dataHandler;
 
     [Header("AspectList")]
     [SerializeField] private List<AspectData> _aspectsInDeck = new List<AspectData>(25);

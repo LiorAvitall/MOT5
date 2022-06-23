@@ -7,8 +7,8 @@ using UnityEngine;
 public class EventHandler : MonoBehaviour
 {
     [Header("Data Script")]
-    [SerializeField] private DataHandler _myDataHandler;
-    [SerializeField] private DataHandler _opponentDataHandler;
+    [SerializeField] private PlayerComponentsData _myDataHandler;
+    [SerializeField] private PlayerComponentsData _opponentDataHandler;
 
     private int ifFiveIWin = 0;
     private bool didIWin = false;

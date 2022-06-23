@@ -13,7 +13,7 @@ public class Hand : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
     #endregion
 
     [Header("Data Script")]
-    [SerializeField] private DataHandler _dataHandler;
+    [SerializeField] private PlayerComponentsData _dataHandler;
 
     [Header("AspectList")]
     public List<AspectData> CardsInHand;

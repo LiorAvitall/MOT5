@@ -14,8 +14,8 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
     #endregion
 
     [Header("Data Script")]
-    [SerializeField] private DataHandler _myDataHandler;
-    [SerializeField] private DataHandler _opponentDataHandler;
+    [SerializeField] private PlayerComponentsData _myDataHandler;
+    [SerializeField] private PlayerComponentsData _opponentDataHandler;
     [SerializeField] private EventHandler _myEventHandler;
     [SerializeField] private GameObject _tombWindow, _tombWindowContent;
 
