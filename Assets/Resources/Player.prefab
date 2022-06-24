@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5341795512135167905}
   - component: {fileID: 6021489002927442045}
+  - component: {fileID: 6650271935634005164}
+  - component: {fileID: 3720669242773923372}
   - component: {fileID: 5902628870577411944}
   m_Layer: 0
   m_Name: Player
@@ -44,7 +46,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33939bfcecc305f44926c266e497066e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _myData: {fileID: 6650271935634005164}
+--- !u!114 &6650271935634005164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3521684303501925316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f07f987624d721a47a61a0e7e0de6fff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _photonView: {fileID: 5902628870577411944}
+  OpponentBattlefieldData: {fileID: 0}
+  SacrificeOverlay: {fileID: 0}
+  LastPlacedCardOnBattelfield: {fileID: 0}
+  IsReviving: 0
+  IsSacrificing: 0
+  IsDestroying: 0
+--- !u!114 &3720669242773923372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3521684303501925316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad37f58aa404a6b4b83a321a1dc06e20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerData: {fileID: 6650271935634005164}
 --- !u!114 &5902628870577411944
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,9 +13,8 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
     #endregion
 
     [Header("Data Script")]
-    [SerializeField] private PlayerData _myDataHandler;
-    [SerializeField] private PlayerData _opponentDataHandler;
-    [SerializeField] private EventHandler _myEventHandler;
+    [SerializeField] private PlayerData _playerData;
+    [SerializeField] private EventHandler _playerEventHandler;
 
     [Header("AspectList")]
     public List<AspectData> CardsInField;
@@ -48,7 +47,7 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
         {
             CurrentCardInBattlefield.ParentToReturn = transform;
             CurrentCardInBattlefield.IsCardInHand = false;
-            _myEventHandler.BattlefieldPlaceCard(CurrentCardInBattlefield);
+            _playerEventHandler.BattlefieldPlaceCard(CurrentCardInBattlefield);
             CurrentCardInBattlefield = null;
             CurrentCardDataInBattlefield = null;
 
@@ -72,11 +71,11 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
     {
         //ClickEventData = eventData;
 
-        if (!_myDataHandler.IsDestroying)
+        if (!_playerData.IsDestroying)
             return;
 
         // need opponent eventData
-        else if (_myDataHandler.IsDestroying)
-            _myDataHandler.Tomb.CardToDestroy(eventData);
+        else if (_playerData.IsDestroying)
+            _playerData.Tomb.CardToDestroy(eventData);
     }
 }

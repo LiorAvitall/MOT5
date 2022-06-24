@@ -31,6 +31,18 @@ public class Deck : MonoBehaviour
 
     private void Start()
     {
+        PlayerData playerData;
+        for (int i = 0; i < GameManager.Instance.PlayerList.Count; i++)
+        {
+            playerData = GameManager.Instance.PlayerList[i].PlayerData;
+
+            if (GameManager.Instance.PlayerList[i].PlayerData.PhotonView.IsMine)
+            {
+                _playerData = playerData;
+                return;
+            }
+        }
+
         _deckList.Clear();
 
         // Initialize _deckList

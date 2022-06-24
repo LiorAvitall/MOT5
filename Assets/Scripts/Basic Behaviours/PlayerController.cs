@@ -13,7 +13,8 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
 
     #region Data Reference
     [Header("Data Reference")]
-    [SerializeField] private PlayerData _myData;
+    [SerializeField] private PlayerData _playerData;
+    public PlayerData PlayerData => _playerData;
     #endregion
 
     #region Indicators
@@ -36,7 +37,7 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
         _currentState = StandbyPhase;
         GameManager.Instance.PlayerList.Add(this);
 
-        _endPhaseBtn = _myData.PlayerUI.transform.GetChild(4).GetComponent<Button>();
+        _endPhaseBtn = _playerData.PlayerUI.transform.GetChild(4).GetComponent<Button>();
         _endPhaseBtn.onClick.AddListener(ChangePhase);
 
         _currentState = StandbyPhase;
@@ -77,7 +78,7 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
         _isOnStandby = false;
         _isOnDraw = true;
 
-        _myData.Deck.PlayerPhotonView.RPC("DrawCard", RpcTarget.All);
+        _playerData.Deck.PlayerPhotonView.RPC("DrawCard", RpcTarget.All);
         _currentState = ActionPhase;
     }
 

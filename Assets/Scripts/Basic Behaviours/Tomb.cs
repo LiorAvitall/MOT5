@@ -14,10 +14,12 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
     #endregion
 
     [Header("Data Script")]
-    [SerializeField] private PlayerData _myDataHandler;
-    [SerializeField] private PlayerData _opponentDataHandler;
-    [SerializeField] private EventHandler _myEventHandler;
+    [SerializeField] private PlayerData _playerData;
+    //[SerializeField] private PlayerData _opponentDataHandler;
+    [SerializeField] private EventHandler _playerEventHandler;
     [SerializeField] private GameObject _tombWindow, _tombWindowContent;
+    public GameObject TombWindow => _tombWindow;
+    public GameObject TombWindowContent  => _tombWindowContent;
 
     [Header("AspectList")]
     public List<AspectData> CardsInTomb;
@@ -52,21 +54,21 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
         AspectData cardToTomb = eventData.pointerDrag.GetComponent<AspectDisplayData>().CardData;
 
         //add current card to tomb
-        _myDataHandler.Tomb.CardsInTomb.Add(cardToTomb);
+        _playerData.Tomb.CardsInTomb.Add(cardToTomb);
 
         //check if works
         print(cardToTomb.Name);
 
         //remove placed cards from hand
-        _myDataHandler.Hand.CardsInHand.Remove(cardToTomb);
+        _playerData.Hand.CardsInHand.Remove(cardToTomb);
 
         eventData.pointerDrag.transform.SetParent(_tombWindowContent.transform);
         eventData.pointerDrag.AddComponent<Button>();
         Button cardBtn = eventData.pointerDrag.GetComponent<Button>();
         cardBtn.onClick.AddListener(Revive);
 
-        _myDataHandler.IsSacrificing = false;
-        _myDataHandler.SacrificeOverlay.SetActive(false);
+        _playerData.IsSacrificing = false;
+        _playerData.SacrificeOverlay.SetActive(false);
 
 
     }
@@ -80,37 +82,57 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
         AspectData cardToTomb = eventData.pointerDrag.GetComponent<AspectDisplayData>().CardData;
 
         //add current card to tomb
-        _opponentDataHandler.Tomb.CardsInTomb.Add(cardToTomb);
+        for (int i = 0; i < _playerData.PlayersInRoom.Length; i++)
+        {
+            if (!_playerData.PlayersInRoom[i].IsLocal)
+            {
+                _playerData.Tomb.CardsInTomb.Add(cardToTomb);
+                Debug.Log($"Player {_playerData.PlayersInRoom[i].ActorNumber} sent a {cardToTomb.Name} to the Tomb");
+
+                _playerData.Battlefield.CardsInField.Remove(cardToTomb);
+
+                eventData.pointerDrag.transform.SetParent(_playerData.Tomb.TombWindowContent.transform);
+
+                eventData.pointerDrag.AddComponent<Button>();
+                Button cardBtn = eventData.pointerDrag.GetComponent<Button>();
+                cardBtn.onClick.AddListener(Revive);
+
+                _playerData.IsDestroying = false;
+            }
+        }
+        
+        //_opponentDataHandler.Tomb.CardsInTomb.Add(cardToTomb);
 
         //check if works
-        print(cardToTomb.Name);
+        //print(cardToTomb.Name);
 
         //remove placed cards from battlefield
-        _opponentDataHandler.Battlefield.CardsInField.Remove(cardToTomb);
 
-        eventData.pointerDrag.transform.SetParent(_tombWindowContent.transform);
-        eventData.pointerDrag.AddComponent<Button>();
-        Button cardBtn = eventData.pointerDrag.GetComponent<Button>();
-        cardBtn.onClick.AddListener(Revive);
+        //_opponentDataHandler.Battlefield.CardsInField.Remove(cardToTomb);
 
-
-        _myDataHandler.IsDestroying = false;
+        //eventData.pointerDrag.transform.SetParent(_tombWindowContent.transform);
+        //eventData.pointerDrag.AddComponent<Button>();
+        //Button cardBtn = eventData.pointerDrag.GetComponent<Button>();
+        //cardBtn.onClick.AddListener(Revive);
+        //
+        //
+        //_playerData.IsDestroying = false;
     }
 
     public void Revive()
     {
         Debug.Log($"Attemting Revive: {EventSystem.current.currentSelectedGameObject.name}");
 
-        if (_myDataHandler.IsReviving)
+        if (_playerData.IsReviving)
         {
             GameObject currentCard = EventSystem.current.currentSelectedGameObject;
             AspectData cardToHand = currentCard.GetComponent<AspectDisplayData>().CardData;
-            currentCard.transform.SetParent(_myDataHandler.Hand.transform);
-            _myDataHandler.Hand.CardsInHand.Add(cardToHand);
+            currentCard.transform.SetParent(_playerData.Hand.transform);
+            _playerData.Hand.CardsInHand.Add(cardToHand);
             CardsInTomb.Remove(cardToHand);
             Destroy(currentCard.GetComponent<Button>());
 
-            _myDataHandler.IsReviving = false;
+            _playerData.IsReviving = false;
             CloseSearchTomb();
 
             Debug.Log($"Revived: {cardToHand.name}");
