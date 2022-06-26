@@ -31,6 +31,17 @@ public class Deck : MonoBehaviour
 
     private void Start()
     {
+        // Set PlayerUI by ActorNumber
+        if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        {
+            _playerData = GameManager.Instance.PlayerList[0].GetComponent<PlayerData>();
+        }
+        else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+        {
+            _playerData = GameManager.Instance.PlayerList[1].GetComponent<PlayerData>();
+        }
+
+        // empty list
         _deckList.Clear();
 
         // Initialize _deckList
