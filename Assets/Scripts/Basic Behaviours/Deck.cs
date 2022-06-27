@@ -15,6 +15,7 @@ public class Deck : MonoBehaviour
 
     #region Data References
     private PlayerData _playerData;
+    public PlayerData PlayerData { get => _playerData; set => _playerData = value; }
 
     [Header("AspectList")]
     [SerializeField] private List<AspectData> _deckList = new List<AspectData>(25);
@@ -31,16 +32,6 @@ public class Deck : MonoBehaviour
 
     private void Start()
     {
-        // Set PlayerUI by ActorNumber
-        if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
-        {
-            _playerData = GameManager.Instance.PlayerList[0].GetComponent<PlayerData>();
-        }
-        else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
-        {
-            _playerData = GameManager.Instance.PlayerList[1].GetComponent<PlayerData>();
-        }
-
         // empty list
         _deckList.Clear();
 

@@ -13,9 +13,11 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
     #endregion
 
     [Header("Data Script")]
-    [SerializeField] private PlayerData _myDataHandler;
-    [SerializeField] private PlayerData _opponentDataHandler;
-    [SerializeField] private EventHandler _myEventHandler;
+    private PlayerData _playerData;
+    public PlayerData PlayerData { get => _playerData; set => _playerData = value; }
+
+    private EventHandler _playerEventHandler;
+    public EventHandler PlayerEventHandler { get => _playerEventHandler; set => _playerEventHandler = value; }
 
     [Header("AspectList")]
     public List<AspectData> CardsInField;
@@ -25,6 +27,7 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
     public AspectData CurrentCardDataInBattlefield;
 
     public PointerEventData ClickEventData;
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.pointerDrag == null)
@@ -48,7 +51,7 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
         {
             CurrentCardInBattlefield.ParentToReturn = transform;
             CurrentCardInBattlefield.IsCardInHand = false;
-            _myEventHandler.BattlefieldPlaceCard(CurrentCardInBattlefield);
+            _playerEventHandler.BattlefieldPlaceCard(CurrentCardInBattlefield);
             CurrentCardInBattlefield = null;
             CurrentCardDataInBattlefield = null;
 
@@ -72,11 +75,11 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
     {
         //ClickEventData = eventData;
 
-        if (!_myDataHandler.IsDestroying)
+        if (!_playerData.IsDestroying)
             return;
 
         // need opponent eventData
-        else if (_myDataHandler.IsDestroying)
-            _myDataHandler.Tomb.CardToDestroy(eventData);
+        else if (_playerData.IsDestroying)
+            _playerData.Tomb.CardToDestroy(eventData);
     }
 }

@@ -18,6 +18,7 @@ public class PlayerData : MonoBehaviour
     #endregion
 
     #region Game Components
+    [SerializeField] private EventHandler _playerEventHandler;
     private Hand _hand;
     private Battlefield _battlefield;
     private Deck _deck;
@@ -30,22 +31,19 @@ public class PlayerData : MonoBehaviour
     #endregion
 
     #region GameObjects References
-    private GameObject _gameCanvas, _playerUI;
+    private GameObject _gameCanvas, _playerUI, _sacrificeOverlay;
     private GameObject _handGO, _battlefieldGO, _deckGO, _tombGO;
+    private GameObject _lastAspectPlacedOnBattelfield;
 
     public GameObject GameCanvas => _gameCanvas;
     public GameObject PlayerUI => _playerUI;
+    public GameObject SacrificeOverlay => _sacrificeOverlay;
     public GameObject HandGO => _handGO;
     public GameObject BattlefieldGO => _battlefieldGO;
     public GameObject DeckGO => _deckGO;
     public GameObject TombGO => _tombGO;
+    public GameObject LastAspectPlacedOnBattelfield { get => _lastAspectPlacedOnBattelfield; set => _lastAspectPlacedOnBattelfield = value; }
     #endregion
-
-    [Header("Data Scripts")]
-    public Battlefield OpponentBattlefieldData; 
-
-    public GameObject SacrificeOverlay;
-    public GameObject LastPlacedCardOnBattelfield;
 
     public bool IsReviving = false;
     public bool IsSacrificing = false;
@@ -53,6 +51,10 @@ public class PlayerData : MonoBehaviour
     //public bool IsDrawingWithLight = false;
 
     #region Monobehavior Callbacks
+    private void Awake()
+    {
+        PhotonNetwork.LocalPlayer.NickName = $"Player {PhotonNetwork.LocalPlayer.ActorNumber}";
+    }
     private void Start()
     {
         InitializePlayerComponents();
@@ -84,14 +86,16 @@ public class PlayerData : MonoBehaviour
         {
             if (_photonView.IsMine)
             {
-                // Set PlayerUI by ActorNumber
+                // Set PlayerUI & SacrificeOverlay by ActorNumber
                 if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
                 {
                     _playerUI = _gameCanvas.transform.GetChild(0).gameObject;
+                    _sacrificeOverlay = _gameCanvas.transform.GetChild(3).gameObject;
                 }
                 else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
                 {
                     _playerUI = _gameCanvas.transform.GetChild(1).gameObject;
+                    _sacrificeOverlay = _gameCanvas.transform.GetChild(4).gameObject;
                 }
 
                 // Set GameObjects
@@ -105,12 +109,23 @@ public class PlayerData : MonoBehaviour
                 _battlefield = _battlefieldGO.GetComponent<Battlefield>();
                 _deck = _deckGO.GetComponent<Deck>();
                 _tomb = _tombGO.GetComponent<Tomb>();
-                
+
+                // Set PlayerData
+                _hand.PlayerData = this;
+                _battlefield.PlayerData = this;
+                _deck.PlayerData = this;
+                _tomb.PlayerData = this;
+
+                // Set PlayerEventHandler
+                _battlefield.PlayerEventHandler = _playerEventHandler;
+                _tomb.PlayerEventHandler = _playerEventHandler;
+
                 // Set PhotonView
                 _hand.PlayerPhotonView = _photonView;
                 _battlefield.PlayerPhotonView = _photonView;
                 _deck.PlayerPhotonView = _photonView;
                 _tomb.PlayerPhotonView = _photonView;
+
             }
 
             return;

@@ -1855,7 +1855,7 @@ GameObject:
   m_Component:
   - component: {fileID: 424058657}
   m_Layer: 5
-  m_Name: Player1SacrificeOverlay
+  m_Name: Player 1 SacrificeOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4767,7 +4767,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1115139663}
   m_Layer: 5
-  m_Name: Player2SacrificeOverlay
+  m_Name: Player 2 SacrificeOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5137,14 +5137,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPhotonView: {fileID: 0}
-  _dataHandler: {fileID: 0}
-  _aspectsInDeck: []
-  _cardPrefab: {fileID: 0}
-  _lightCard: {fileID: 0}
-  _deathCard: {fileID: 0}
-  _destructionCard: {fileID: 0}
-  _lifeCard: {fileID: 0}
-  _controlCard: {fileID: 0}
+  _deckList: []
+  _aspectPrefab: {fileID: 0}
+  _lightAspectData: {fileID: 0}
+  _deathAspectData: {fileID: 0}
+  _destructionAspectData: {fileID: 0}
+  _lifeAspectData: {fileID: 0}
+  _controlAspectData: {fileID: 0}
 --- !u!114 &1173999661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10467,14 +10466,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPhotonView: {fileID: 0}
-  _dataHandler: {fileID: 0}
-  _aspectsInDeck: []
-  _cardPrefab: {fileID: 0}
-  _lightCard: {fileID: 0}
-  _deathCard: {fileID: 0}
-  _destructionCard: {fileID: 0}
-  _lifeCard: {fileID: 0}
-  _controlCard: {fileID: 0}
+  _deckList: []
+  _aspectPrefab: {fileID: 0}
+  _lightAspectData: {fileID: 0}
+  _deathAspectData: {fileID: 0}
+  _destructionAspectData: {fileID: 0}
+  _lifeAspectData: {fileID: 0}
+  _controlAspectData: {fileID: 0}
 --- !u!114 &2127539941
 MonoBehaviour:
   m_ObjectHideFlags: 0
