@@ -1,0 +1,88 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class LobbyManager2 : MonoBehaviourPunCallbacks
+{
+    [SerializeField] Text roomList;
+    [SerializeField] InputField roomToCreate;
+
+    private void Awake()
+    {
+        PhotonNetwork.AutomaticallySyncScene = true;
+
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+
+        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.GameVersion = "1.0";
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    public void UIJoinRoom()
+    {
+        string roomName = roomToCreate.text;
+        PhotonNetwork.JoinRoom(roomName);
+    }
+
+    public void UICreateRoom()
+
+    {
+        string roomName = roomToCreate.text;
+        PhotonNetwork.CreateRoom(roomName);
+        roomList.text += roomName + System.Environment.NewLine;
+
+    }
+    public override void OnConnectedToMaster()
+    {
+        base.OnConnectedToMaster();
+        Debug.Log("connected to master");
+
+        //PhotonNetwork.JoinLobby();
+
+    }
+
+    public override void OnJoinedLobby()
+    {
+        base.OnJoinedLobby();
+        Debug.Log("joined lobby");
+
+    }
+    public override void OnCreatedRoom()
+    {
+        base.OnCreatedRoom();
+        Debug.Log("room was crearted");
+        //SceneManager.LoadScene(1);
+        PhotonNetwork.LoadLevel(1);
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        base.OnCreateRoomFailed(returnCode, message);
+        Debug.Log("room creation was failed: " + returnCode + "," + message);
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        //get list of available rooms
+
+        base.OnRoomListUpdate(roomList);
+        foreach (RoomInfo ri in roomList)
+        {
+            Debug.Log(ri.Name);
+        }
+        //todo:
+        //update the room list in the UI
+    }
+}
