@@ -33,23 +33,23 @@ public class EventHandler : MonoBehaviour
     public void StartGame()
     {
         // Draw first card from deck's aspect list from deck to hand
-        _playerDataHandler.Deck.PlayerPhotonView.RPC("InitializeGame", Photon.Pun.RpcTarget.AllBuffered);
+        _playerDataHandler.Deck.PhotonView.RPC("InitializeGame", Photon.Pun.RpcTarget.AllBuffered);
     }
 
     public void StartGameShowCase()
     {
         // Draw first card from deck's aspect list from deck to hand
-        _playerDataHandler.Deck.PlayerPhotonView.RPC("InitializeGameShowCase", Photon.Pun.RpcTarget.AllBuffered);
+        _playerDataHandler.Deck.PhotonView.RPC("InitializeGameShowCase", Photon.Pun.RpcTarget.AllBuffered);
     }
 
     public void DrawCard()
     {
-        _playerDataHandler.Deck.PlayerPhotonView.RPC("DrawCard", Photon.Pun.RpcTarget.AllBuffered);
+        _playerDataHandler.Deck.PhotonView.RPC("DrawCard", Photon.Pun.RpcTarget.AllBuffered);
     }
 
     public void DrawTwo()
     {
-        _playerDataHandler.Deck.PlayerPhotonView.RPC("DrawTwo", Photon.Pun.RpcTarget.AllBuffered);
+        _playerDataHandler.Deck.PhotonView.RPC("DrawTwo", Photon.Pun.RpcTarget.AllBuffered);
     }
 
     public void Revive()

@@ -9,8 +9,8 @@ public class Deck : MonoBehaviour
 {
     #region Photon
     [Header("Photon")]
-    [SerializeField] private PhotonView _playerPhotonView;
-    public PhotonView PlayerPhotonView { get => _playerPhotonView; set => _playerPhotonView = value; }
+    [SerializeField] private PhotonView _photonView;
+    public PhotonView PhotonView { get => _photonView; set => _photonView = value; }
     #endregion
 
     #region Data References
@@ -140,7 +140,7 @@ public class Deck : MonoBehaviour
     }
 
     [PunRPC]
-    private void DrawCard()
+    public void DrawCard()
     {
         //get top card in deck & adds it to the hand
         _playerData.Hand.CardsInHand.Add(_deckList[0]);

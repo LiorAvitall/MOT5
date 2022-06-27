@@ -9,8 +9,8 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
 {
     #region Photon
     [Header("Photon")]
-    [SerializeField] private PhotonView _playerPhotonView;
-    public PhotonView PlayerPhotonView { get => _playerPhotonView; set => _playerPhotonView = value; }
+    [SerializeField] private PhotonView _photonView;
+    public PhotonView PhotonView { get => _photonView; set => _photonView = value; }
     #endregion
 
     [Header("Data Script")]
@@ -37,7 +37,7 @@ public class Tomb : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerE
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void OnDrop(PointerEventData eventData)

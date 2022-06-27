@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     //[SerializeField] private PhotonView _photonView;
     //#endregion
 
-    public List<PlayerController> PlayerList;
+    public List<PlayerData> PlayerList;
 
     private void Awake()
     {
@@ -53,11 +53,11 @@ public class GameManager : MonoBehaviour
         switch (actorNumber)
         {
             case 1:
-                PlayerList[0].IsMyTurn = true;
+                PlayerList[0].GetComponent<PlayerController>().IsMyTurn = true;
                 break;
 
             case 2:
-                PlayerList[1].IsMyTurn = true;
+                PlayerList[1].GetComponent<PlayerController>().IsMyTurn = true;
                 break;
 
             default:

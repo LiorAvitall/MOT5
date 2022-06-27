@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
     private void Start()
     {
         _currentState = StandbyPhase;
-        GameManager.Instance.PlayerList.Add(this);
 
         _endPhaseBtn = _myData.PlayerUI.transform.GetChild(4).GetComponent<Button>();
         _endPhaseBtn.onClick.AddListener(ChangePhase);
@@ -77,7 +76,7 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
         _isOnStandby = false;
         _isOnDraw = true;
 
-        _myData.Deck.PlayerPhotonView.RPC("DrawCard", RpcTarget.All);
+        _myData.Deck.PhotonView.RPC("DrawCard", RpcTarget.All);
         _currentState = ActionPhase;
     }
 

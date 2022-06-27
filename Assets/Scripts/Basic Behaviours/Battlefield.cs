@@ -8,8 +8,8 @@ public class Battlefield : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
 {
     #region Photon
     [Header("Photon")]
-    [SerializeField] private PhotonView _playerPhotonView;
-    public PhotonView PlayerPhotonView { get => _playerPhotonView; set => _playerPhotonView = value; }
+    [SerializeField] private PhotonView _photonView;
+    public PhotonView PhotonView { get => _photonView; set => _photonView = value; }
     #endregion
 
     [Header("Data Script")]

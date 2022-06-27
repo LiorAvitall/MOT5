@@ -54,6 +54,7 @@ public class PlayerData : MonoBehaviour
     private void Awake()
     {
         PhotonNetwork.LocalPlayer.NickName = $"Player {PhotonNetwork.LocalPlayer.ActorNumber}";
+        GameManager.Instance.PlayerList.Add(this);
     }
     private void Start()
     {
@@ -82,7 +83,7 @@ public class PlayerData : MonoBehaviour
     {
         _gameCanvas = GameObject.Find("Game Canvas");
 
-        for (int i = 0; i < _playersInRoom.Length; i++)
+        for (int i = 0; i < GameManager.Instance.PlayerList.Count; i++)
         {
             if (_photonView.IsMine)
             {
@@ -119,13 +120,6 @@ public class PlayerData : MonoBehaviour
                 // Set PlayerEventHandler
                 _battlefield.PlayerEventHandler = _playerEventHandler;
                 _tomb.PlayerEventHandler = _playerEventHandler;
-
-                // Set PhotonView
-                _hand.PlayerPhotonView = _photonView;
-                _battlefield.PlayerPhotonView = _photonView;
-                _deck.PlayerPhotonView = _photonView;
-                _tomb.PlayerPhotonView = _photonView;
-
             }
 
             return;
