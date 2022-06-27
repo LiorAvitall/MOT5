@@ -147,13 +147,14 @@ public class Deck : MonoBehaviour
 
         //reads said card data and creates a prefab based on that data in the hand
         _aspectPrefab.GetComponent<AspectDisplayData>().CardData = _deckList[0];
-        Instantiate(_aspectPrefab, _playerData.Hand.transform);
-        
+        GameObject aspectToHand = PhotonNetwork.Instantiate(_aspectPrefab.name, Vector2.zero, Quaternion.identity);
+        aspectToHand.transform.parent = _playerData.Hand.transform;
+
         //check if works (update: it does)
-        print(_deckList[0].Name);
+        Debug.Log(_deckList[0].Name);
 
         _deckList.RemoveAt(0);
-        _currentDeckSize --;
+        _currentDeckSize--;
     }
 
     [PunRPC]

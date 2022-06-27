@@ -37,8 +37,6 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
 
         _endPhaseBtn = _myData.PlayerUI.transform.GetChild(4).GetComponent<Button>();
         _endPhaseBtn.onClick.AddListener(ChangePhase);
-
-        _currentState = StandbyPhase;
     }
 
     private void Update()
@@ -96,7 +94,7 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
         if (_isPhaseDone)
         {
             _isPhaseDone = false;
-            _currentState = NegatePhase;
+            _currentState = ReactionPhase;
         }
     }
 
@@ -193,8 +191,6 @@ public class PlayerController : MonoBehaviour, IDropHandler, IPointerEnterHandle
     #endregion
 
     #region Methods
-    
-
     public void ChangePhase()
     {
         if (!_isPhaseDone)
